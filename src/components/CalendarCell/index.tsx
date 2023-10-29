@@ -10,35 +10,33 @@ interface CalendarCellProps {
 }
 
 export const CalendarCell: FC<CalendarCellProps> = ({
-  date,
-  isWeekend,
-  isHoliday,
-  isCurrentMonth,
-  selectedDay,
-  handleSelectDay,
+    date,
+    isCurrentMonth,
+    selectedDay,
+    handleSelectDay,
 }) => {
-  const isToday = new Date().toDateString() === date.toDateString();
-  const isSelectedDay = date.toDateString() === selectedDay?.toDateString();
+    const isToday = new Date().toDateString() === date.toDateString();
+    const isSelectedDay = date.toDateString() === selectedDay?.toDateString();
 
-  const color = isToday ? 'blue' : isCurrentMonth ? 'black' : 'grey';
-  const backgroundColor = isSelectedDay ? 'pink' : 'transparent';
+    const color = isToday ? 'blue' : isCurrentMonth ? 'black' : 'grey';
+    const backgroundColor = isSelectedDay ? 'pink' : 'transparent';
 
-  const selectDate = handleSelectDay
-    ? () => {
-        handleSelectDay(date);
-      }
-    : () => {};
-  return (
-    <div
-      onClick={selectDate}
-      style={{
-        width: '50px',
-        color: `${color}`,
-        backgroundColor: `${backgroundColor}`,
-        userSelect: 'none',
-      }}
-    >
-      {date.getDate()}
-    </div>
-  );
+    const selectDate = handleSelectDay
+        ? () => {
+            handleSelectDay(date);
+        }
+        : () => {};
+    return (
+        <div
+            onClick={selectDate}
+            style={{
+                width: '50px',
+                color: `${color}`,
+                backgroundColor: `${backgroundColor}`,
+                userSelect: 'none',
+            }}
+        >
+            {date.getDate()}
+        </div>
+    );
 };
