@@ -36,6 +36,7 @@ const config = {
       ...config.resolve.alias,
       helpers: path.resolve(__dirname, '../src/helpers'),
       components: path.resolve(__dirname, '../src/components'),
+      constants: path.resolve(__dirname, '../src/constants'),
     };
     return config;
   },

@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { FC } from 'react';
+import { styled } from 'styled-components';
 
-export const CalendarWeekPanel = ({
-    startOnMonday = true,
-}: {
+const WeekPanelContainer = styled.div`
+  justify-content: center;
+  display: flex;
+  font-family: Arial, Helvetica, sans-serif;
+`;
+const WeekPanelCell = styled.div`
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+interface CalendarWeekPanelProps {
   startOnMonday: boolean;
-}) => {
-    const week = startOnMonday
-        ? ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
-        : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  calendarView?: 'week' | 'month' | 'months' | 'years';
+}
 
-    return (
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-            {week.map((day) => (
-                <div key={day}>{day}</div>
-            ))}
-        </div>
-    );
+export const CalendarWeekPanel: FC<CalendarWeekPanelProps> = ({
+  startOnMonday = true,
+  calendarView,
+}) => {
+  const week = startOnMonday
+    ? ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+    : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+  return calendarView === 'months' || calendarView === 'years' ? null : (
+    <WeekPanelContainer>
+      {week.map((day) => (
+        <WeekPanelCell key={day}>{day}</WeekPanelCell>
+      ))}
+    </WeekPanelContainer>
+  );
 };

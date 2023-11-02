@@ -1,15 +1,7 @@
 import { Calendar } from 'components/Calendar';
-import { withInput } from 'components/HOCs/withInput';
+import { withInputs } from 'components/HOCs/withInputs';
 import React from 'react';
-
-
-const CalendarWithInput = withInput(Calendar);
-
+const MyCalendar = withInputs(Calendar);
 export const App = () => {
-    return (
-        <h1>
-            <Calendar />
-            <CalendarWithInput />
-        </h1>
-    );
+  return <MyCalendar />;
 };

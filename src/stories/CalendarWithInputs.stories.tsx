@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Calendar } from 'components/Calendar';
-import { withInput } from 'components/HOCs/withInput';
+import { withInputs } from 'components/HOCs/withInputs';
 
-const CalendarWithInput = withInput(Calendar);
+const CalendarWithInputs = withInputs(Calendar);
 
-const meta: Meta<typeof CalendarWithInput> = {
-  component: CalendarWithInput,
+const meta: Meta<typeof CalendarWithInputs> = {
+  component: CalendarWithInputs,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof CalendarWithInput>;
+type Story = StoryObj<typeof CalendarWithInputs>;
 
 export const Default: Story = {
-  name: 'Calendar with input',
+  name: 'Calendar with inputs',
   args: {},
 };
 export const Week: Story = {
@@ -35,21 +35,15 @@ export const Months: Story = {
   },
 };
 export const Years: Story = {
-  name: 'Calendar months view',
+  name: 'Calendar years view',
   args: {
     defaultCalendarView: 'years',
   },
 };
-export const WithTodos: Story = {
-  name: 'Calendar WithTodos view',
+export const WithDefaultSelected: Story = {
+  name: 'Calendar WithDefaultSelected view',
   args: {
-    defaultCalendarView: 'month',
-    withTodos: true,
-  },
-};
-export const WithPreSelectedDay: Story = {
-  name: 'Calendar WithPreSelectedDay view',
-  args: {
-    selectedDay: new Date(0),
+    selectedFirstDay: new Date(1698352426000),
+    selectedSecondDay: new Date(1698958226000),
   },
 };
