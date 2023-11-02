@@ -44,7 +44,6 @@
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
     "babel-jest": "^29.7.0",
-    "cypress-rollup-preprocessor": "^1.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.7",
     "eslint": "^8.51.0",
