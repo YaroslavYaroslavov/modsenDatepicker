@@ -1,8 +1,8 @@
 name: CI
 on: [push]
 jobs:
-  eslint:
-    name: Lint code base
+  test:
+    name: test
     runs-on: ubuntu-latest
 
     steps:
@@ -12,3 +12,7 @@ jobs:
         run: npm i
       - name: Run ESlint
         run: npm run lint
+      - name: Run Prettier
+        run: npm run prettier
+      - name: Run test
+        run: npm run test
