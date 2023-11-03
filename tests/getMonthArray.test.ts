@@ -1,4 +1,5 @@
 import { getMonthArray } from '../src/helpers/getMonthArray';
+console.log(getMonthArray(10, 2023, true));
 
 test('Получаем месяц с  началом недели с понедельника', () => {
   expect(getMonthArray(10, 2023, true)).toStrictEqual([
