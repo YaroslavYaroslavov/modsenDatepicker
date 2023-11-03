@@ -1,0 +1,18 @@
+name: CI
+on: [push]
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install packages
+        run: npm i
+      - name: Run ESlint
+        run: npm run lint
+      - name: Run Prettier
+        run: npm run prettier
+      - name: Run test
+        run: npm run test
