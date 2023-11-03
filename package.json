@@ -9,6 +9,7 @@
     "lint": "npx eslint ./src --ext .tsx,.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "prettier": "prettier . --check",
     "test": "jest"
   },
   "author": "",
