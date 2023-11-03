@@ -25,23 +25,29 @@ export function getMonthArray(
     for (let day = 0; day < 7; day++) {
       if (week === 0 && day < firstDay) {
         const previousMonthDays = new Date(year, month, 0).getDate();
+        const date = new Date(
+          year,
+          month - 1,
+          previousMonthDays - (firstDay - day - 1)
+        );
+        date.setUTCHours(0, 0, 0, 0);
         weekArray.push({
-          date: new Date(
-            year,
-            month - 1,
-            previousMonthDays - (firstDay - day - 1)
-          ),
+          date: date,
           isCurrentMonth: false,
         });
       } else if (currentDay <= daysInMonth) {
+        const date = new Date(year, month, currentDay);
+        date.setUTCHours(0, 0, 0, 0);
         weekArray.push({
-          date: new Date(year, month, currentDay),
+          date: date,
           isCurrentMonth: true,
         });
         currentDay++;
       } else {
+        const date = new Date(year, month + 1, currentDay - daysInMonth);
+        date.setUTCHours(0, 0, 0, 0);
         weekArray.push({
-          date: new Date(year, month + 1, currentDay - daysInMonth),
+          date: date,
           isCurrentMonth: false,
         });
         currentDay++;
