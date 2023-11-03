@@ -1,4 +1,4 @@
-import { monthName } from 'constants/monthArray';
+import monthName from 'constants/monthArray';
 import React, { FC } from 'react';
 
 import { MonthCell } from '../MonthCell';

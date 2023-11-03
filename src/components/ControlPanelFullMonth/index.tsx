@@ -1,5 +1,5 @@
 import { Button } from 'components/Button';
-import { monthName } from 'constants/monthArray';
+import monthName from 'constants/monthArray';
 import React, { FC } from 'react';
 
 interface ControlPanelFullMonthProps {
