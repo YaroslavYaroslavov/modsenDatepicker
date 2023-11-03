@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rollup --config ./config/rollup.prod.config.js --bundleConfigAsCjs",
     "build:dev": "rollup --config ./config/rollup.dev.config.js -w --bundleConfigAsCjs ",
-    "lint": "npx eslint ./src --ext .tsx,.ts --fix",
+    "lint": "npx eslint ./src --ext .tsx,.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "jest"
