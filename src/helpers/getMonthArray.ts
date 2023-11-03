@@ -5,8 +5,8 @@ export function getMonthArray(
   year: number,
   startOnMonday: boolean
 ): Day {
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  let firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+  let firstDay = new Date(Date.UTC(year, month, 1)).getUTCDay();
   let currentDay = 1;
 
   if (startOnMonday) {
@@ -17,6 +17,8 @@ export function getMonthArray(
     }
   }
 
+  const TIMEZONE_OFFSET = -3;
+
   const result: { date: Date; isCurrentMonth: boolean }[][] = [];
 
   for (let week = 0; week < 6; week++) {
@@ -24,30 +26,45 @@ export function getMonthArray(
 
     for (let day = 0; day < 7; day++) {
       if (week === 0 && day < firstDay) {
-        const previousMonthDays = new Date(year, month, 0).getDate();
-        const date = new Date(
-          year,
-          month - 1,
-          previousMonthDays - (firstDay - day - 1)
+        const previousMonthDays = new Date(
+          Date.UTC(year, month, 0)
+        ).getUTCDate();
+        const previousMonthDate = new Date(
+          Date.UTC(
+            year,
+            month - 1,
+            previousMonthDays - (firstDay - day - 1),
+            0,
+            0,
+            0
+          )
         );
-        date.setUTCHours(0, 0, 0, 0);
+        previousMonthDate.setUTCHours(
+          previousMonthDate.getUTCHours() + TIMEZONE_OFFSET
+        );
         weekArray.push({
-          date: date,
+          date: previousMonthDate,
           isCurrentMonth: false,
         });
       } else if (currentDay <= daysInMonth) {
-        const date = new Date(year, month, currentDay);
-        date.setUTCHours(0, 0, 0, 0);
+        const currentDate = new Date(
+          Date.UTC(year, month, currentDay, 0, 0, 0)
+        );
+        currentDate.setUTCHours(currentDate.getUTCHours() + TIMEZONE_OFFSET);
         weekArray.push({
-          date: date,
+          date: currentDate,
           isCurrentMonth: true,
         });
         currentDay++;
       } else {
-        const date = new Date(year, month + 1, currentDay - daysInMonth);
-        date.setUTCHours(0, 0, 0, 0);
+        const nextMonthDate = new Date(
+          Date.UTC(year, month + 1, currentDay - daysInMonth, 0, 0, 0)
+        );
+        nextMonthDate.setUTCHours(
+          nextMonthDate.getUTCHours() + TIMEZONE_OFFSET
+        );
         weekArray.push({
-          date: date,
+          date: nextMonthDate,
           isCurrentMonth: false,
         });
         currentDay++;
