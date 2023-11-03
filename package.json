@@ -1,6 +1,6 @@
 {
   "name": "jaroslawik-datepicker2",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "simple datipicker",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
