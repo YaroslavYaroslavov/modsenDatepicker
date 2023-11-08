@@ -1,6 +1,6 @@
 import { getMonthArray } from '../src/helpers/getMonthArray';
 
-test('Получаем месяц с  началом недели с понедельника', () => {
+test('Get month array on start monday', () => {
   expect(getMonthArray(10, 2023, true)).toStrictEqual([
     [
       { date: new Date('2023-10-29T21:00:00.000Z'), isCurrentMonth: false },

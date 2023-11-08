@@ -1,39 +1,30 @@
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
-
 import { Calendar } from '../src/components/Calendar';
 
 describe('Calendar', () => {
-  it('Рендер с заданным днем.', () => {
-    const { getByText } = render(
-      <Calendar selectedDay={new Date(1698883200000)} />
-    );
+  it('Render with Selected Day.', () => {
+    const { getByText } = render(<Calendar selectedDay={new Date(1698883200000)} />);
     const title = getByText('November 2023');
 
     expect(title).toBeInTheDocument();
   });
-  it('Переключение месяца на следующий', () => {
-    const { getByText } = render(
-      <Calendar selectedDay={new Date(1698883200000)} />
-    );
+  it('Set month to next', () => {
+    const { getByText } = render(<Calendar selectedDay={new Date(1698883200000)} />);
     const nextButton = getByText('»');
     fireEvent.click(nextButton);
     const title = getByText('December 2023');
     expect(title).toBeInTheDocument();
   });
-  it('Переключение месяца на предыдущий', () => {
-    const { getByText } = render(
-      <Calendar selectedDay={new Date(1698883200000)} />
-    );
+  it('Set month to prev', () => {
+    const { getByText } = render(<Calendar selectedDay={new Date(1698883200000)} />);
     const nextButton = getByText('«');
     fireEvent.click(nextButton);
     const title = getByText('October 2023');
     expect(title).toBeInTheDocument();
   });
-  it('Переключение вида календаря', () => {
-    const { getByText } = render(
-      <Calendar selectedDay={new Date(1698883200000)} />
-    );
+  it('Change Calendar View', () => {
+    const { getByText } = render(<Calendar selectedDay={new Date(1698883200000)} />);
     const title = getByText('November 2023');
     fireEvent.click(title);
     const yearTitle = getByText('2023');
@@ -42,10 +33,8 @@ describe('Calendar', () => {
     const decadeTitle = getByText('2020 - 2029');
     expect(decadeTitle).toBeInTheDocument();
   });
-  it('Переключение даты ', () => {
-    const { getByText } = render(
-      <Calendar selectedDay={new Date(1698883200000)} />
-    );
+  it('Date change', () => {
+    const { getByText } = render(<Calendar selectedDay={new Date(1698883200000)} />);
     const title = getByText('November 2023');
     fireEvent.click(title);
     const yearTitle = getByText('2023');
@@ -57,7 +46,7 @@ describe('Calendar', () => {
     const newTitle = getByText('November 2020');
     expect(newTitle).toBeInTheDocument();
   });
-  it('Кнопка переключение скрывается при достижении нижнего граничного года', () => {
+  it('Button is hidden when year is minimum', () => {
     const { getByText } = render(
       <Calendar selectedDay={new Date(1698883200000)} minCalendarYear={2022} />
     );
@@ -68,7 +57,7 @@ describe('Calendar', () => {
 
     expect(prevButton).not.toBeInTheDocument();
   });
-  it('Кнопка переключение скрывается при достижении верхнего граничного года', () => {
+  it('Button is hidden when year is maximum', () => {
     const { getByText } = render(
       <Calendar selectedDay={new Date(1698883200000)} maxCalendarYear={2024} />
     );

@@ -1,186 +1,236 @@
+import { CalendarBody } from 'components/CalendarBody';
+import { CalendarControlPanel } from 'components/CalendarControlPanel';
+import { CalendarWeekPanel } from 'components/CalendarWeekPanel';
+import { theme } from 'constants/theme';
 import { generateDecade } from 'helpers/generateDecade';
-import React, { FC, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import { ThemeProvider } from 'styled-components';
 
-import { CalendarBody } from '../CalendarBody';
-import { CalendarControlPanel } from '../CalendarControlPanel';
-import { CalendarWeekPanel } from '../CalendarWeekPanel';
+import { config } from './config';
+import { CalendarAllProps } from './interfaces';
+import { CalendarContainer } from './styled';
 
-type StyledComponentProps = {
-  isclearbuttonvisible: string;
-};
+const {
+  defaultMaxCalendarYear,
+  defaultMinCalendarYear,
+  defaultStartWeekCounter,
+  monthInYear,
+  yearsInDecade,
+  firstMonthIndex,
+  lastMonthIndex,
+  oneYear,
+  oneMonth,
+  oneWeek,
+  firstWeekIndex,
+  noDate,
+} = config;
 
-const CalendarContainer = styled.div<StyledComponentProps>`
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid grey;
-  box-sizing: border-box;
-  border-radius: ${(props) =>
-    props.isclearbuttonvisible === 'false'
-      ? '10px 10px 10px 10px'
-      : '10px 10px 0 0'};
-  padding-bottom: 10px;
-`;
+export const Calendar: FC<CalendarAllProps> = memo((props) => {
+  const {
+    selectedDay,
+    isInputHaveValue = false,
+    handleSelectDay,
+    startOnMonday = true,
+    maxCalendarYear = defaultMaxCalendarYear,
+    minCalendarYear = defaultMinCalendarYear,
+    defaultMonth = new Date().getMonth(),
+    defaultYear = new Date().getFullYear(),
+    defaultCalendarView = 'month',
+    selectedFirstDay,
+    selectedSecondDay,
+    withTodos = false,
+  } = props;
 
-export interface CalendarAllProps {
-  startOnMonday?: boolean;
-  selectedDay?: Date;
-  handleSelectDay?: (date: Date) => void;
-  maxCalendarYear?: number;
-  minCalendarYear?: number;
-  defaultMonth?: number;
-  defaultYear?: number;
-  selectedFirstDay?: Date;
-  selectedSecondDay?: Date;
-  withTodos?: boolean;
-  defaultCalendarView?: 'week' | 'month' | 'months' | 'years';
-  isInputHaveValue?: boolean;
-}
+  Calendar.displayName = 'Calendar';
 
-export const Calendar: FC<CalendarAllProps> = ({
-  selectedDay,
-  isInputHaveValue = false,
-  handleSelectDay,
-  startOnMonday = true,
-  maxCalendarYear = 3023,
-  minCalendarYear = 1020,
-  defaultMonth = new Date().getMonth(),
-  defaultYear = new Date().getFullYear(),
-  defaultCalendarView = 'month',
-  selectedFirstDay,
-  selectedSecondDay,
-  withTodos = false,
-}) => {
-  const [month, setMonth] = useState(defaultMonth);
+  if (
+    defaultYear > maxCalendarYear ||
+    defaultYear < minCalendarYear ||
+    (selectedDay &&
+      (selectedDay.getFullYear() > maxCalendarYear || selectedDay.getFullYear() < minCalendarYear))
+  ) {
+    return <h1>Props conflict</h1>;
+  }
+
+  const [month, setMonth] = useState(defaultMonth % monthInYear);
   const [year, setYear] = useState(defaultYear);
   const [calendarView, setCalendarView] = useState(defaultCalendarView);
   const [isLastWeek, setIsLastWeek] = useState(false);
   const [isFirstWeek, setIsFirstWeek] = useState(true);
-  const [weekCounter, setWeekCounter] = useState(0);
+  const [weekCounter, setWeekCounter] = useState(defaultStartWeekCounter);
+
+  useEffect(() => {
+    setMonth(defaultMonth % monthInYear);
+    setYear(defaultYear);
+    setCalendarView(defaultCalendarView);
+  }, [defaultMonth, defaultYear, defaultCalendarView]);
 
   useEffect(() => {
     if (
       selectedDay &&
       selectedDay.getFullYear() <= maxCalendarYear &&
-      selectedDay.getFullYear() >= minCalendarYear
+      selectedDay.getFullYear() >= minCalendarYear &&
+      selectedDay.getTime() !== noDate
     ) {
       setMonth(selectedDay.getMonth());
       setYear(selectedDay.getFullYear());
     }
   }, [selectedDay]);
 
-  const currentDecadeYears = generateDecade(
-    minCalendarYear,
-    maxCalendarYear,
-    year
+  useEffect(() => {
+    if (
+      selectedFirstDay &&
+      selectedFirstDay.getFullYear() <= maxCalendarYear &&
+      selectedFirstDay.getFullYear() >= minCalendarYear &&
+      selectedFirstDay?.getTime() !== noDate
+    ) {
+      setYear(selectedFirstDay.getFullYear());
+      setMonth(selectedFirstDay.getMonth());
+    }
+  }, [selectedFirstDay]);
+
+  useEffect(() => {
+    if (
+      selectedSecondDay &&
+      selectedSecondDay.getFullYear() <= maxCalendarYear &&
+      selectedSecondDay.getFullYear() >= minCalendarYear &&
+      selectedSecondDay?.getTime() !== noDate
+    ) {
+      setYear(selectedSecondDay.getFullYear());
+      setMonth(selectedSecondDay.getMonth());
+    }
+  }, [selectedSecondDay]);
+
+  const currentDecadeYears = generateDecade(minCalendarYear, maxCalendarYear, year);
+
+  const handleChangeDecade = useCallback(
+    (isSetNextButton: boolean) => {
+      if (isSetNextButton) {
+        return () => {
+          setYear((prev) => prev + yearsInDecade);
+        };
+      } else
+        return () => {
+          setYear((prev) => prev - yearsInDecade);
+        };
+    },
+    [yearsInDecade, setYear]
   );
 
-  function handleSetToPrevDecade(): void {
-    setYear((prev) => prev - 10);
-  }
+  const handleChangeMonth = useCallback(
+    (isSetNextButton: boolean) => {
+      if (isSetNextButton) {
+        return () => {
+          if (month === lastMonthIndex) {
+            setYear((prevYear) => prevYear + oneMonth);
+            setMonth(firstMonthIndex);
+          } else {
+            setMonth((prevMonth) => prevMonth + oneMonth);
+          }
+        };
+      } else
+        return () => {
+          if (month === firstMonthIndex && year) {
+            setYear((prevYear) => prevYear - oneMonth);
+            setMonth(lastMonthIndex);
+          } else {
+            setMonth((prevMonth) => prevMonth - oneMonth);
+          }
+        };
+    },
+    [month, year, firstMonthIndex, lastMonthIndex, setMonth, setYear, oneMonth]
+  );
 
-  function handleSetToNextDecade(): void {
-    setYear((prev) => prev + 10);
-  }
+  const handleChangeWeek = useCallback(
+    (isSetNextButton: boolean) => {
+      if (isSetNextButton) {
+        return () => {
+          setWeekCounter((prevCounter) => prevCounter + oneWeek);
+          if (isLastWeek) {
+            setWeekCounter(firstWeekIndex);
+            handleChangeMonth(true)();
+          }
+        };
+      } else
+        return () => {
+          setWeekCounter((prevCounter) => prevCounter - oneWeek);
+          if (isFirstWeek) {
+            handleChangeMonth(false)();
+          }
+        };
+    },
+    [weekCounter, isFirstWeek, setWeekCounter, firstWeekIndex, isLastWeek]
+  );
 
-  function handleSetToPrevMonth(): void {
-    if (month === 0 && year) {
-      setYear((prevState) => prevState - 1);
-      setMonth(11);
-    } else {
-      setMonth((prevState) => prevState - 1);
-    }
-  }
+  const handleChangeYear = useCallback(
+    (isSetNextButton: boolean) => {
+      if (isSetNextButton) {
+        return () => {
+          setYear((prevYear) => prevYear + oneYear);
+        };
+      } else
+        return () => {
+          setYear((prevYear) => prevYear - oneYear);
+        };
+    },
+    [setYear, oneYear]
+  );
 
-  function handleSetToNextMonth(): void {
-    if (month === 11) {
-      setYear((prevState) => prevState + 1);
-      setMonth(0);
-    } else {
-      setMonth((prevState) => prevState + 1);
-    }
-  }
+  const handleSelectMonth = useCallback(
+    (e: React.MouseEvent<HTMLElement>): void => {
+      const MonthCell = e.target as HTMLInputElement;
+      setMonth(Number(MonthCell.id));
+      setCalendarView('month');
+    },
+    [setMonth, setCalendarView]
+  );
 
-  function handleSetToPrevWeek(): void {
-    setWeekCounter((prevState) => prevState - 1);
-
-    if (isFirstWeek) {
-      handleSetToPrevMonth();
-    }
-  }
-
-  function handleSetToNextWeek(): void {
-    setWeekCounter((prevState) => prevState + 1);
-
-    if (isLastWeek) {
-      setWeekCounter(0);
-      handleSetToNextMonth();
-    }
-  }
-
-  function handleSetToNextYear(): void {
-    setYear((prevState) => prevState + 1);
-  }
-
-  function handleSetToPrevYear(): void {
-    setYear((prevState) => prevState - 1);
-  }
-
-  function handleSelectMonth(e: React.MouseEvent<HTMLElement>): void {
-    const MonthCell = e.target as HTMLInputElement;
-    setMonth(Number(MonthCell.id));
-    setCalendarView('month');
-  }
-  function handleSelectYear(e: React.MouseEvent<HTMLElement>): void {
-    const YearCell = e.target as HTMLInputElement;
-    setYear(Number(YearCell.textContent));
-    setCalendarView('months');
-  }
+  const handleSelectYear = useCallback(
+    (e: React.MouseEvent<HTMLElement>): void => {
+      const YearCell = e.target as HTMLInputElement;
+      setYear(Number(YearCell.textContent));
+      setCalendarView('months');
+    },
+    [setYear, setCalendarView]
+  );
 
   return (
-    <CalendarContainer isclearbuttonvisible={isInputHaveValue.toString()}>
-      <CalendarControlPanel
-        handleSetToPrevDecade={handleSetToPrevDecade}
-        handleSetToNextDecade={handleSetToNextDecade}
-        currentDecadeYears={currentDecadeYears}
-        handleSetToPrevMonth={handleSetToPrevMonth}
-        handleSetToNextMonth={handleSetToNextMonth}
-        handleSetToNextWeek={handleSetToNextWeek}
-        handleSetToPrevWeek={handleSetToPrevWeek}
-        handleSetToNextYear={handleSetToNextYear}
-        handleSetToPrevYear={handleSetToPrevYear}
-        setCalendarView={setCalendarView}
-        month={month}
-        year={year}
-        maxCalendarYear={maxCalendarYear}
-        minCalendarYear={minCalendarYear}
-        calendarView={calendarView}
-        isLastWeek={isLastWeek}
-        isFirstWeek={isFirstWeek}
-      />
-      <CalendarWeekPanel
-        startOnMonday={startOnMonday}
-        calendarView={calendarView}
-      />
-      <CalendarBody
-        withTodos={withTodos}
-        selectedFirstDay={selectedFirstDay}
-        selectedSecondDay={selectedSecondDay}
-        handleSelectYear={handleSelectYear}
-        handleSelectMonth={handleSelectMonth}
-        startOnMonday={startOnMonday}
-        month={month}
-        year={year}
-        selectedDay={selectedDay}
-        handleSelectDay={handleSelectDay}
-        calendarView={calendarView}
-        setIsLastWeek={setIsLastWeek}
-        setIsFirstWeek={setIsFirstWeek}
-        weekCounter={weekCounter}
-        currentDecadeYears={currentDecadeYears}
-      />
-    </CalendarContainer>
+    <ThemeProvider theme={theme}>
+      <CalendarContainer isclearbuttonvisible={isInputHaveValue.toString()}>
+        <CalendarControlPanel
+          handleChangeDecade={handleChangeDecade}
+          handleChangeMonth={handleChangeMonth}
+          handleChangeWeek={handleChangeWeek}
+          handleChangeYear={handleChangeYear}
+          currentDecadeYears={currentDecadeYears}
+          setCalendarView={setCalendarView}
+          month={month}
+          year={year}
+          maxCalendarYear={maxCalendarYear}
+          minCalendarYear={minCalendarYear}
+          calendarView={calendarView}
+          isLastWeek={isLastWeek}
+          isFirstWeek={isFirstWeek}
+        />
+        <CalendarWeekPanel startOnMonday={startOnMonday} calendarView={calendarView} />
+        <CalendarBody
+          withTodos={withTodos}
+          selectedFirstDay={selectedFirstDay}
+          selectedSecondDay={selectedSecondDay}
+          handleSelectYear={handleSelectYear}
+          handleSelectMonth={handleSelectMonth}
+          startOnMonday={startOnMonday}
+          month={month}
+          year={year}
+          selectedDay={selectedDay}
+          handleSelectDay={handleSelectDay}
+          calendarView={calendarView}
+          setIsLastWeek={setIsLastWeek}
+          setIsFirstWeek={setIsFirstWeek}
+          weekCounter={weekCounter}
+          currentDecadeYears={currentDecadeYears}
+        />
+      </CalendarContainer>
+    </ThemeProvider>
   );
-};
+});

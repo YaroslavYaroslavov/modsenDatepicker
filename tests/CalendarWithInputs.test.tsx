@@ -1,23 +1,18 @@
+import { render } from '@testing-library/react';
 import React from 'react';
-import {
-  render,
-  fireEvent,
-  getByPlaceholderText,
-} from '@testing-library/react';
-
 import { Calendar } from '../src/components/Calendar';
-import { withInputs } from '../src/components/HOCs/withInputs';
+import { withRangePicker } from '../src/components/HOCs/withRangePicker';
 
-const MyCalendar = withInputs(Calendar);
+const MyCalendar = withRangePicker(Calendar);
 
 describe('CalendarWithInptut', () => {
-  it('Рендер с инпутами.', () => {
+  it('Render with inputs', () => {
     const { getAllByPlaceholderText } = render(<MyCalendar />);
-    const inputArr = getAllByPlaceholderText('dd-mm-yyyy');
+    const inputArr = getAllByPlaceholderText('dd.mm.yyyy');
 
     expect(inputArr.length).toBe(2);
   });
-  it('Рендер с заданным рейнджем', () => {
+  it('Render with selected range', () => {
     const { getByText } = render(
       <MyCalendar
         selectedFirstDay={new Date(1698883200000)}

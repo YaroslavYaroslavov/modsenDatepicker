@@ -1,16 +1,17 @@
 import { Calendar } from 'components/Calendar';
-import { withInput } from 'components/HOCs/withInput';
-import { withInputs } from 'components/HOCs/withInputs';
+import { getDefaultCalendar } from 'components/HOCs/defaultCalendar';
+import { withDatePicker } from 'components/HOCs/withDatePicker';
+import { withRangePicker } from 'components/HOCs/withRangePicker';
 
 class CalendarService {
-  static getDefaultCalendar() {
-    return Calendar;
+  static getCustomizeCalendar() {
+    return getDefaultCalendar(Calendar);
   }
-  static withInput() {
-    return withInput(Calendar);
+  static getCalendarWithDatePicker() {
+    return withDatePicker(Calendar);
   }
-  static withInputs() {
-    return withInputs(Calendar);
+  static getCalendarWithRangePicker() {
+    return withRangePicker(Calendar);
   }
 }
 

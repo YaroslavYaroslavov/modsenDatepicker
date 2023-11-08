@@ -1,66 +1,59 @@
+import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
-import {
-  render,
-  fireEvent,
-  getByPlaceholderText,
-} from '@testing-library/react';
-
 import { Calendar } from '../src/components/Calendar';
-import { withInput } from '../src/components/HOCs/withInput';
+import { withDatePicker } from '../src/components/HOCs/withDatePicker';
 
-const MyCalendar = withInput(Calendar);
+const MyCalendar = withDatePicker(Calendar);
 
 describe('CalendarWithInptut', () => {
-  it('Рендер с инпутом.', () => {
-    const { getByPlaceholderText } = render(
-      <MyCalendar selectedDay={new Date(1698883200000)} />
-    );
-    const input = getByPlaceholderText('dd-mm-yyyy');
+  it('Render with input.', () => {
+    const { getByPlaceholderText } = render(<MyCalendar selectedDay={new Date(1698883200000)} />);
+    const input = getByPlaceholderText('dd.mm.yyyy');
 
     expect(input).toBeInTheDocument();
   });
-  it('Ввод в инпут валидной даты', () => {
+  it('Input valid date', () => {
     const { getByText, getByPlaceholderText } = render(
       <MyCalendar selectedDay={new Date(1698883200000)} />
     );
-    const input = getByPlaceholderText('dd-mm-yyyy');
+    const input = getByPlaceholderText('dd.mm.yyyy');
     fireEvent.change(input, {
       target: {
-        value: '1-12-2023',
+        value: '1.12.2023',
       },
     });
     const title = getByText('December 2023');
     expect(title).toBeInTheDocument();
   });
-  it('Клик по клетке', () => {
+  it('Click on cell', () => {
     const { getByText, getByPlaceholderText } = render(
       <MyCalendar selectedDay={new Date(1698883200000)} />
     );
     const cell = getByText('15');
-    const input: HTMLInputElement = getByPlaceholderText('dd-mm-yyyy');
+    const input: HTMLElement = getByPlaceholderText('dd.mm.yyyy');
     fireEvent.click(cell);
 
-    expect(input.value).toBe('15-11-2023');
+    expect((input as HTMLInputElement).value).toBe('15.11.2023');
   });
-  it('Открытие TodoList', () => {
+  it('Open todolist', () => {
     const { getByText, getByPlaceholderText } = render(
       <MyCalendar withTodos={true} selectedDay={new Date(1698883200000)} />
     );
     const cell = getByText('15');
     fireEvent.click(cell);
     fireEvent.click(cell);
-    const input: HTMLInputElement = getByPlaceholderText('Task...');
+    const input: HTMLElement = getByPlaceholderText('Task...');
 
     expect(input).toBeInTheDocument();
   });
-  it('Добавление и удаление задачи', () => {
+  it('Add and delete tsk', () => {
     const { getByText, getByPlaceholderText } = render(
       <MyCalendar withTodos={true} selectedDay={new Date(1698883200000)} />
     );
     const cell = getByText('15');
     fireEvent.click(cell);
     fireEvent.click(cell);
-    const input: HTMLInputElement = getByPlaceholderText('Task...');
+    const input: HTMLElement = getByPlaceholderText('Task...');
     fireEvent.change(input, {
       target: {
         value: 'some task',

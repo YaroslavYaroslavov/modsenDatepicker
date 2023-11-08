@@ -46,7 +46,9 @@
   },
   "plugins": ["@typescript-eslint", "react", "simple-import-sort"],
   "rules": {
+    "react/prop-types": "off",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error"
-  }
+  },
+  "ignorePatterns": ["tests/", "stories/"]
 }

@@ -1,92 +1,37 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import React, { FC, memo, useEffect, useRef, useState } from 'react';
 
-const TaskContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 250px;
-  flex-wrap: nowrap;
-  margin-top: 10px;
-  p {
-    font-family: Arial, Helvetica, sans-serif;
-    width: 150px;
-    max-width: 250px;
-    word-break: break-all;
-  }
-  input {
-    width: 45px;
-  }
-  button {
-    border: none;
-    background-color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 15px;
-    border-radius: 7px;
-    cursor: pointer;
-    &:hover {
-      color: white;
-      background-color: #317cf0;
-    }
-  }
-  div {
-    width: 56px;
-    display: flex;
-  }
-`;
-const InputTaskContainer = styled.div`
-  align-items: center;
-  justify-content: center;
-  input {
-    margin-top: 10px;
-    width: 100px;
-  }
-  button {
-    border: none;
-    background-color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 15px;
-    width: 45px;
-    height: 32px;
-    border-radius: 7px;
-    cursor: pointer;
-    &:hover {
-      color: white;
-      background-color: #317cf0;
-    }
-  }
-`;
+import { Task, ToDoContainerProps } from './interfaces';
+import {
+  ButtonAdd,
+  ButtonDelete,
+  InputAddTask,
+  InputTaskContainer,
+  TaskBody,
+  TaskContainer,
+  TaskWrapper,
+} from './styled';
 
-interface Task {
-  day: string;
-  value: string;
-  id: number;
-}
-
-interface ToDoContainerProps {
-  selectedDay?: Date;
-}
-
-export const ToDoContainer: FC<ToDoContainerProps> = ({ selectedDay }) => {
+export const ToDoContainer: FC<ToDoContainerProps> = memo(({ selectedDay }) => {
+  ToDoContainer.displayName = 'ToDoContainer';
   const inputRef = useRef<HTMLInputElement>(null);
-  const [todo, setTodo] = useState<Task[]>([]);
-  const [todoToRender, setTodoToRender] = useState<Task[]>([]);
+  const [allTodosFromLocaleStorage, setAllTodosFromLocaleStorage] = useState<Task[]>([]);
+  const [filteredTodos, setFilteredTodos] = useState<Task[]>([]);
 
   useEffect(() => {
     const taskListString = localStorage.getItem('todoList');
     const taskListArray = taskListString ? JSON.parse(taskListString) : [];
-    setTodo(taskListArray);
+    setAllTodosFromLocaleStorage(taskListArray);
   }, [selectedDay]);
 
   useEffect(() => {
     if (selectedDay) {
-      setTodoToRender(
-        todo.filter(
+      setFilteredTodos(
+        allTodosFromLocaleStorage.filter(
           (task: Task) => task.day === selectedDay.toLocaleDateString()
         )
       );
     }
-  }, [todo, selectedDay]);
+  }, [allTodosFromLocaleStorage, selectedDay]);
 
   const handleAddTodo = (): void => {
     if (selectedDay && inputRef.current && inputRef.current.value) {
@@ -95,41 +40,41 @@ export const ToDoContainer: FC<ToDoContainerProps> = ({ selectedDay }) => {
         value: inputRef.current.value,
         id: Date.now(),
       };
-      localStorage.setItem('todoList', JSON.stringify([...todo, task]));
+      localStorage.setItem('todoList', JSON.stringify([...allTodosFromLocaleStorage, task]));
 
-      setTodo((prevState) => [...prevState, task]);
+      setAllTodosFromLocaleStorage((prevState) => [...prevState, task]);
     }
   };
 
   const handleDeleteTask = (taskId: number): void => {
-    const updatedTodo = todo.filter((task: Task) => task.id !== taskId);
+    const updatedTodo = allTodosFromLocaleStorage.filter((task: Task) => task.id !== taskId);
     localStorage.setItem('todoList', JSON.stringify(updatedTodo));
-    setTodo(updatedTodo);
+    setAllTodosFromLocaleStorage(updatedTodo);
   };
 
   return (
-    <div>
+    <>
       <InputTaskContainer>
-        <input placeholder="Task..." ref={inputRef} type="text" />
-        <button onClick={handleAddTodo}>Add</button>
+        <InputAddTask placeholder="Task..." ref={inputRef} type="text" />
+        <ButtonAdd onClick={handleAddTodo}>Add</ButtonAdd>
       </InputTaskContainer>
-      <div>
-        {todoToRender.map((task: Task) => (
+      <TaskWrapper>
+        {filteredTodos.map((task: Task) => (
           <TaskContainer key={task.id}>
-            <p>{task.value}</p>
+            <TaskBody>{task.value}</TaskBody>
             <div>
               <input type="checkbox" />
-              <button
+              <ButtonDelete
                 onClick={() => {
                   handleDeleteTask(task.id);
                 }}
               >
                 Delete
-              </button>
+              </ButtonDelete>
             </div>
           </TaskContainer>
         ))}
-      </div>
-    </div>
+      </TaskWrapper>
+    </>
   );
-};
+});

@@ -1,11 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Calendar } from 'components/Calendar';
-import { withInputs } from 'components/HOCs/withInputs';
+import { withRangePicker } from 'components/HOCs/withRangePicker';
 
-const CalendarWithInputs = withInputs(Calendar);
+const CalendarWithInputs = withRangePicker(Calendar);
 
 const meta: Meta<typeof CalendarWithInputs> = {
   component: CalendarWithInputs,
+  argTypes: {
+    defaultCalendarView: {
+      options: ['week', 'month', 'months', 'years'],
+      control: { type: 'radio' },
+    },
+    selectedFirstDay: {
+      options: [new Date(), new Date(2003, 6, 13), new Date(2004, 8, 17), undefined],
+      control: { type: 'radio' },
+    },
+    selectedSecondDay: {
+      options: [new Date(), new Date(2003, 6, 13), new Date(2004, 8, 17), undefined],
+      control: { type: 'radio' },
+    },
+  },
 };
 
 export default meta;

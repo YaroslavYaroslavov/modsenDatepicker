@@ -1,56 +1,34 @@
-import { FullMonthBody } from 'components/FullMonthBody';
-import { MonthBody } from 'components/MonthBody';
 import { ToDoContainer } from 'components/TodoContainer';
-import { WeekBody } from 'components/WeekBody';
-import { YearsBody } from 'components/YearsBody';
-import React, { FC, useState } from 'react';
-import styled from 'styled-components';
+import React, { FC, memo, useState } from 'react';
 
-const CalendarBodyContainer = styled.div`
-  width: 250px;
-  div {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
-`;
+import { FullMonthBody } from './FullMonthBody';
+import { CalendarBodyProps } from './interfaces';
+import { MonthBody } from './MonthBody';
+import { CalendarBodyContainer } from './styled';
+import { WeekBody } from './WeekBody';
+import { YearsBody } from './YearsBody';
 
-interface CalendarBodyProps {
-  startOnMonday: boolean;
-  withTodos: boolean;
-  month: number;
-  year: number;
-  selectedDay?: Date;
-  calendarView?: 'week' | 'month' | 'months' | 'years';
-  handleSelectDay?: (date: Date) => void;
-  weekCounter: number;
-  setIsLastWeek: (arg0: boolean) => void;
-  setIsFirstWeek: (arg0: boolean) => void;
-  handleSelectMonth: (e: React.MouseEvent<HTMLInputElement>) => void;
-  handleSelectYear: (e: React.MouseEvent<HTMLElement>) => void;
-  currentDecadeYears: number[];
-  selectedFirstDay?: Date;
-  selectedSecondDay?: Date;
-}
+export const CalendarBody: FC<CalendarBodyProps> = memo((props) => {
+  const {
+    startOnMonday = true,
+    month = new Date().getMonth(),
+    year = new Date().getFullYear(),
+    selectedDay,
+    handleSelectDay,
+    calendarView,
+    weekCounter,
+    setIsLastWeek,
+    setIsFirstWeek,
+    handleSelectMonth,
+    handleSelectYear,
+    selectedFirstDay,
+    selectedSecondDay,
+    currentDecadeYears,
+    withTodos,
+  } = props;
 
-export const CalendarBody: FC<CalendarBodyProps> = ({
-  startOnMonday = true,
-  month = new Date().getMonth(),
-  year = new Date().getFullYear(),
-  selectedDay,
-  handleSelectDay,
-  calendarView,
-  weekCounter,
-  setIsLastWeek,
-  setIsFirstWeek,
-  handleSelectMonth,
-  handleSelectYear,
-  selectedFirstDay,
-  selectedSecondDay,
-  currentDecadeYears,
-  withTodos,
-}) => {
+  CalendarBody.displayName = 'CalendarBody';
+
   const [todoListOpen, setTodoListOpen] = useState(true);
   const toggleTodoList = (): void => {
     setTodoListOpen((prevState: boolean) => !prevState);
@@ -70,9 +48,7 @@ export const CalendarBody: FC<CalendarBodyProps> = ({
             handleSelectDay={handleSelectDay}
             toggleTodoList={toggleTodoList}
           />
-          {withTodos && selectedDay && todoListOpen ? (
-            <ToDoContainer selectedDay={selectedDay} />
-          ) : null}
+          {withTodos && selectedDay && todoListOpen && <ToDoContainer selectedDay={selectedDay} />}
         </CalendarBodyContainer>
       );
     }
@@ -93,9 +69,7 @@ export const CalendarBody: FC<CalendarBodyProps> = ({
             setIsFirstWeek={setIsFirstWeek}
             toggleTodoList={toggleTodoList}
           />
-          {withTodos && selectedDay && todoListOpen ? (
-            <ToDoContainer selectedDay={selectedDay} />
-          ) : null}
+          {withTodos && selectedDay && todoListOpen && <ToDoContainer selectedDay={selectedDay} />}
         </CalendarBodyContainer>
       );
     }
@@ -118,4 +92,4 @@ export const CalendarBody: FC<CalendarBodyProps> = ({
       );
     }
   }
-};
+});
