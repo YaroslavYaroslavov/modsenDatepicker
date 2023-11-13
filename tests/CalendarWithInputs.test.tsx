@@ -7,7 +7,7 @@ const MyCalendar = withRangePicker(Calendar);
 
 describe('CalendarWithInptut', () => {
   it('Render with inputs', () => {
-    const { getAllByPlaceholderText } = render(<MyCalendar />);
+    const { getAllByPlaceholderText } = render(<MyCalendar holidayColor={'red'} />);
     const inputArr = getAllByPlaceholderText('dd.mm.yyyy');
 
     expect(inputArr.length).toBe(2);
@@ -15,8 +15,9 @@ describe('CalendarWithInptut', () => {
   it('Render with selected range', () => {
     const { getByText } = render(
       <MyCalendar
-        selectedFirstDay={new Date(1698883200000)}
-        selectedSecondDay={new Date(1699228800000)}
+        defaultSelectedFirstDay={new Date(1698883200000)}
+        defaultSelectedSecondDay={new Date(1699228800000)}
+        holidayColor={'red'}
       />
     );
 

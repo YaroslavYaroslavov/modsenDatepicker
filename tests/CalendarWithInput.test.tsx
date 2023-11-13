@@ -7,14 +7,24 @@ const MyCalendar = withDatePicker(Calendar);
 
 describe('CalendarWithInptut', () => {
   it('Render with input.', () => {
-    const { getByPlaceholderText } = render(<MyCalendar selectedDay={new Date(1698883200000)} />);
+    const { getByPlaceholderText } = render(
+      <MyCalendar
+        defaultSelectedDay={new Date(1698883200000)}
+        withTodos={false}
+        holidayColor={''}
+      />
+    );
     const input = getByPlaceholderText('dd.mm.yyyy');
 
     expect(input).toBeInTheDocument();
   });
   it('Input valid date', () => {
     const { getByText, getByPlaceholderText } = render(
-      <MyCalendar selectedDay={new Date(1698883200000)} />
+      <MyCalendar
+        defaultSelectedDay={new Date(1698883200000)}
+        withTodos={false}
+        holidayColor={''}
+      />
     );
     const input = getByPlaceholderText('dd.mm.yyyy');
     fireEvent.change(input, {
@@ -27,7 +37,11 @@ describe('CalendarWithInptut', () => {
   });
   it('Click on cell', () => {
     const { getByText, getByPlaceholderText } = render(
-      <MyCalendar selectedDay={new Date(1698883200000)} />
+      <MyCalendar
+        defaultSelectedDay={new Date(1698883200000)}
+        withTodos={false}
+        holidayColor={''}
+      />
     );
     const cell = getByText('15');
     const input: HTMLElement = getByPlaceholderText('dd.mm.yyyy');
@@ -37,7 +51,7 @@ describe('CalendarWithInptut', () => {
   });
   it('Open todolist', () => {
     const { getByText, getByPlaceholderText } = render(
-      <MyCalendar withTodos={true} selectedDay={new Date(1698883200000)} />
+      <MyCalendar withTodos={true} defaultSelectedDay={new Date(1698883200000)} holidayColor={''} />
     );
     const cell = getByText('15');
     fireEvent.click(cell);
@@ -48,7 +62,7 @@ describe('CalendarWithInptut', () => {
   });
   it('Add and delete tsk', () => {
     const { getByText, getByPlaceholderText } = render(
-      <MyCalendar withTodos={true} selectedDay={new Date(1698883200000)} />
+      <MyCalendar withTodos={true} defaultSelectedDay={new Date(1698883200000)} holidayColor={''} />
     );
     const cell = getByText('15');
     fireEvent.click(cell);

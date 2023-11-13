@@ -4,11 +4,11 @@ export interface DefaultProps {
   defaultMonth: number;
   defaultYear: number;
   startOnMonday: boolean;
-  selectedDay: Date;
+  defaultSelectedDay: Date;
   maxCalendarYear: number;
   minCalendarYear: number;
   defaultCalendarView: CalendarView;
-  selectedFirstDay: Date;
-  selectedSecondDay: Date;
-  holidayColor: string;
+  defaultSelectedFirstDay: Date;
+  defaultSelectedSecondDay: Date;
+  holidayColor?: string;
 }
