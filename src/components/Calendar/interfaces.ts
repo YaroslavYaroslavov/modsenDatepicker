@@ -16,4 +16,5 @@ export interface CalendarAllProps {
   withTodos?: boolean;
   defaultCalendarView?: CalendarView;
   isInputHaveValue?: boolean;
+  holidayColor?: string;
 }

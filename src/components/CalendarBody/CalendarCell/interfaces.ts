@@ -7,6 +7,7 @@ export type StyledComponentProps = {
   isfirstday: string;
   isbetweenselecteddays: string;
   issecondday: string;
+  holidaycolor: string;
 };
 export interface CalendarCellProps {
   date: Date;
@@ -16,4 +17,5 @@ export interface CalendarCellProps {
   selectedSecondDay?: Date;
   handleSelectDay?: (date: Date) => void;
   toggleTodoList: () => void;
+  holidayColor: string;
 }

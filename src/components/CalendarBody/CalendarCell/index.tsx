@@ -1,11 +1,11 @@
-import React, { FC, memo } from 'react';
+import { holidaysMock } from 'constants/holidaysMock';
+import React, { FC, memo, useMemo } from 'react';
 
-import { holidaysMock } from '../../../constants/holidaysMock';
 import { config } from './config';
 import { CalendarCellProps } from './interfaces';
 import { CellContainer } from './styled';
 
-const { leftButtonCode, realMonthOffset, sundayIndex, saturdayIndex } = config;
+const { realMonthOffset, sundayIndex, saturdayIndex } = config;
 
 export const CalendarCell: FC<CalendarCellProps> = memo((props) => {
   const {
@@ -15,6 +15,7 @@ export const CalendarCell: FC<CalendarCellProps> = memo((props) => {
     selectedFirstDay,
     selectedSecondDay,
     handleSelectDay,
+    holidayColor,
     toggleTodoList,
   } = props;
 
@@ -26,10 +27,12 @@ export const CalendarCell: FC<CalendarCellProps> = memo((props) => {
     date.toDateString() === selectedFirstDay?.toDateString() ||
     date.toDateString() === selectedSecondDay?.toDateString();
 
-  const isHoliday: boolean = holidaysMock.some(
-    (holiday) =>
-      holiday.day === date.getDate() && holiday.month === date.getMonth() + realMonthOffset
-  );
+  const isHoliday = useMemo(() => {
+    return holidaysMock.some(
+      (holiday) =>
+        holiday.day === date.getDate() && holiday.month === date.getMonth() + realMonthOffset
+    );
+  }, [holidaysMock, date, realMonthOffset]);
 
   const isWeekend: boolean = date.getDay() === saturdayIndex || date.getDay() === sundayIndex;
 
@@ -49,14 +52,9 @@ export const CalendarCell: FC<CalendarCellProps> = memo((props) => {
       }
     : () => {};
 
-  const handleMouseOver = (e: React.MouseEvent<HTMLElement>) => {
-    if (e.buttons === leftButtonCode && !selectedDay) {
-      selectDate();
-    }
-  };
-
   return (
     <CellContainer
+      holidaycolor={holidayColor}
       isselectedday={isSelectedDay.toString()}
       istoday={isToday.toString()}
       isholiday={isHoliday.toString()}
@@ -65,7 +63,6 @@ export const CalendarCell: FC<CalendarCellProps> = memo((props) => {
       isbetweenselecteddays={isBetweenSelectedDays.toString()}
       issecondday={isSecondDay.toString()}
       iscurrentmonth={isCurrentMonth.toString()}
-      onMouseOver={handleMouseOver}
       onClick={selectDate}
       onDoubleClick={toggleTodoList}
     >

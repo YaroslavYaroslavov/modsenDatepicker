@@ -7,4 +7,5 @@ export interface CalendarProps {
   withTodos?: boolean;
   maxCalendarYear?: number;
   minCalendarYear?: number;
+  holidayColor: string;
 }

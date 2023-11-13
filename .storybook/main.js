@@ -6,6 +6,7 @@ const config = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-onboarding',
+    'storybook-color-picker',
     '@storybook/addon-interactions',
   ],
   framework: {

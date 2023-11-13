@@ -12,27 +12,29 @@ const { unselectedDate } = config;
 
 export const withRangePicker = (WrappedComponent: FC<CalendarAllProps>) => {
   const ComponentWithInput = (props: DefaultProps) => {
+    const { defaultSelectedFirstDay, defaultSelectedSecondDay } = props;
+
     const [selectedFirstDay, setSelectedFirstDay] = useState(
-      props.selectedFirstDay || new Date(unselectedDate)
+      defaultSelectedFirstDay || new Date(unselectedDate)
     );
     const [selectedSecondDay, setSelectedSecondDay] = useState(
-      props.selectedSecondDay || new Date(unselectedDate)
+      defaultSelectedSecondDay || new Date(unselectedDate)
     );
     const [firstInputValue, setFirstInputValue] = useState(
-      props.selectedFirstDay?.toLocaleDateString() || ''
+      defaultSelectedFirstDay?.toLocaleDateString() || ''
     );
     const [secondInputValue, setSecondInputValue] = useState(
-      props.selectedSecondDay?.toLocaleDateString() || ''
+      defaultSelectedSecondDay?.toLocaleDateString() || ''
     );
     const [isNotValidFirstInput, setIsNotValidFirstInput] = useState(false);
     const [isNotValidSecondInput, setIsNotValidSecondInput] = useState(false);
 
     useEffect(() => {
-      setSelectedSecondDay(props.selectedSecondDay || new Date(unselectedDate));
-      setSelectedFirstDay(props.selectedFirstDay || new Date(unselectedDate));
-      setFirstInputValue(props.selectedFirstDay?.toLocaleDateString() || '');
-      setSecondInputValue(props.selectedSecondDay?.toLocaleDateString() || '');
-    }, [props.selectedFirstDay, props.selectedSecondDay]);
+      setSelectedSecondDay(defaultSelectedSecondDay || new Date(unselectedDate));
+      setSelectedFirstDay(defaultSelectedFirstDay || new Date(unselectedDate));
+      setFirstInputValue(defaultSelectedFirstDay?.toLocaleDateString() || '');
+      setSecondInputValue(defaultSelectedSecondDay?.toLocaleDateString() || '');
+    }, [defaultSelectedFirstDay, defaultSelectedSecondDay]);
 
     const handleClearButton = useCallback((): void => {
       setSelectedFirstDay(new Date(unselectedDate));
@@ -72,19 +74,26 @@ export const withRangePicker = (WrappedComponent: FC<CalendarAllProps>) => {
     const handleSelectDay = useCallback(
       (date: Date) => {
         const stringDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-
         if (selectedFirstDay.toLocaleDateString() === '01.01.1970') {
           setSelectedFirstDay(date);
           setFirstInputValue(stringDate);
-        } else if (
-          selectedSecondDay.getTime() - date.getTime() >
-          date.getTime() - selectedFirstDay.getTime()
-        ) {
-          setSelectedFirstDay(date);
-          setFirstInputValue(stringDate);
+          setIsNotValidFirstInput(false);
         } else {
-          setSelectedSecondDay(date);
-          setSecondInputValue(stringDate);
+          if (selectedFirstDay.getTime() === date.getTime()) {
+            return;
+          }
+          if (selectedFirstDay.getTime() < date.getTime()) {
+            setSelectedSecondDay(date);
+            setIsNotValidSecondInput(false);
+            setSecondInputValue(stringDate);
+          } else {
+            setSelectedSecondDay(selectedFirstDay);
+            setSelectedFirstDay(date);
+            setSecondInputValue(firstInputValue);
+            setFirstInputValue(stringDate);
+            setIsNotValidFirstInput(false);
+            setIsNotValidSecondInput(false);
+          }
         }
       },
       [selectedFirstDay, selectedSecondDay, setFirstInputValue, setSecondInputValue]

@@ -1,5 +1,6 @@
 import { config } from 'components/Calendar/config';
 import { Button } from 'components/CalendarControlPanel/Button';
+import { monthsView, monthView } from 'constants/calendarViews';
 import monthName from 'constants/monthArray';
 import React, { FC, memo } from 'react';
 
@@ -22,17 +23,13 @@ export const ControlPanelFullMonth: FC<ControlPanelFullMonthProps> = memo((props
   return (
     <ControlPanelWrapper>
       {month === firstMonthIndex && year === minCalendarYear ? null : (
-        <Button panel={'month'} callback={handleChangeMonth} isSetNextButton={false} />
+        <Button panel={monthView} callback={handleChangeMonth} isSetNextButton={false} />
       )}
-      <ControlPanelHeader
-        onClick={() => {
-          setCalendarView('months');
-        }}
-      >
+      <ControlPanelHeader onClick={setCalendarView.bind(this, monthsView)}>
         {monthName[month % monthName.length]} {year}
       </ControlPanelHeader>
       {month === lastMonthIndex && year === maxCalendarYear ? null : (
-        <Button panel={'month'} callback={handleChangeMonth} isSetNextButton={true} />
+        <Button panel={monthView} callback={handleChangeMonth} isSetNextButton={true} />
       )}
     </ControlPanelWrapper>
   );

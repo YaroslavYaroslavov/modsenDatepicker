@@ -5,11 +5,11 @@ export const YearCell = styled.div`
   ${centerByFlex}
   width: 100px;
   height: 30px;
-  font-family: ${(props) => props.theme.globalFont};
+  font-family: ${({ theme }) => theme.globalFont};
   cursor: pointer;
   border-radius: 7px;
   &:hover {
-    color: ${(props) => props.theme.colorHoverCell};
-    background-color: ${(props) => props.theme.backgroundColorHoverCell};
+    color: ${({ theme }) => theme.colorHoverCell};
+    background-color: ${({ theme }) => theme.backgroundColorHoverCell};
   }
 `;

@@ -43,6 +43,7 @@ export const ToDoContainer: FC<ToDoContainerProps> = memo(({ selectedDay }) => {
       localStorage.setItem('todoList', JSON.stringify([...allTodosFromLocaleStorage, task]));
 
       setAllTodosFromLocaleStorage((prevState) => [...prevState, task]);
+      inputRef.current.value = '';
     }
   };
 
@@ -64,13 +65,7 @@ export const ToDoContainer: FC<ToDoContainerProps> = memo(({ selectedDay }) => {
             <TaskBody>{task.value}</TaskBody>
             <div>
               <input type="checkbox" />
-              <ButtonDelete
-                onClick={() => {
-                  handleDeleteTask(task.id);
-                }}
-              >
-                Delete
-              </ButtonDelete>
+              <ButtonDelete onClick={handleDeleteTask.bind(this, task.id)}>Delete</ButtonDelete>
             </div>
           </TaskContainer>
         ))}

@@ -1,3 +1,5 @@
+import { monthsView, yearsView } from 'constants/calendarViews';
+import { startOnMondayArr, startOnSundayArr } from 'constants/weekPlaceholder';
 import React, { FC, memo } from 'react';
 
 import { CalendarWeekPanelProps } from './interfaces';
@@ -7,11 +9,9 @@ export const CalendarWeekPanel: FC<CalendarWeekPanelProps> = memo(
   ({ startOnMonday = true, calendarView }) => {
     CalendarWeekPanel.displayName = 'CalendarWeekPanel';
 
-    const week = startOnMonday
-      ? ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
-      : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+    const week = startOnMonday ? startOnMondayArr : startOnSundayArr;
 
-    return calendarView === 'months' || calendarView === 'years' ? null : (
+    return calendarView === monthsView || calendarView === yearsView ? null : (
       <WeekPanelContainer>
         {week.map((day) => (
           <WeekPanelCell key={day}>{day}</WeekPanelCell>

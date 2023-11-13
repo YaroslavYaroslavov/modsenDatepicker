@@ -5,35 +5,43 @@ export const TaskContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: ${(props) => props.theme.containerWidth};
+
   flex-wrap: nowrap;
   margin-top: 10px;
+
+  width: ${({ theme }) => theme.containerWidth};
 `;
 export const ButtonAdd = styled.button`
   border: none;
-  background-color: ${(props) => props.theme.background};
-  font-family: ${(props) => props.theme.globalFont};
   font-size: 15px;
   width: 45px;
   height: 100%;
   border-radius: 7px;
   cursor: pointer;
+
+  font-family: ${({ theme }) => theme.globalFont};
+
+  background-color: ${({ theme }) => theme.background};
+
   &:hover {
-    color: ${(props) => props.theme.colorHoverControl};
-    background-color: ${(props) => props.theme.backgroundColorHoverControl};
+    color: ${({ theme }) => theme.colorHoverControl};
+
+    background-color: ${({ theme }) => theme.backgroundColorHoverControl};
   }
 `;
 
 export const ButtonDelete = styled.button`
   border: none;
-  background-color: ${(props) => props.theme.background};
-  font-family: ${(props) => props.theme.globalFont};
+  background-color: ${({ theme }) => theme.background};
+  font-family: ${({ theme }) => theme.globalFont};
   border-radius: 7px;
   height: 40px;
   cursor: pointer;
+
   &:hover {
-    color: ${(props) => props.theme.colorHoverControl};
-    background-color: ${(props) => props.theme.backgroundColorHoverControl};
+    color: ${({ theme }) => theme.colorHoverControl};
+
+    background-color: ${({ theme }) => theme.backgroundColorHoverControl};
   }
 `;
 
@@ -45,17 +53,20 @@ export const InputAddTask = styled.input`
 
 export const TaskWrapper = styled.div`
   ${centerByFlex}
+
+  flex-direction: column;
 `;
 
 export const TaskBody = styled.p`
-  font-family: ${(props) => props.theme.globalFont};
+  font-family: ${({ theme }) => theme.globalFont};
   width: 100px;
   word-break: break-all;
 `;
 
 export const InputTaskContainer = styled.div`
+  ${centerByFlex}
+
   height: 32px;
   margin-top: 10px;
   gap: 20px;
-  ${centerByFlex}
 `;

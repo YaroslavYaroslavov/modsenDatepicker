@@ -44,11 +44,13 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "react", "simple-import-sort"],
+  "plugins": ["@typescript-eslint", "react", "simple-import-sort", "import"],
   "rules": {
     "react/prop-types": "off",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error"
   },
   "ignorePatterns": ["tests/", "stories/"]
 }

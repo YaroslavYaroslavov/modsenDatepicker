@@ -2,6 +2,7 @@ import { ControlPanelFullMonth } from 'components/CalendarControlPanel/ControlPa
 import { ControlPanelMonth } from 'components/CalendarControlPanel/ControlPanelMonth';
 import { ControlPanelWeek } from 'components/CalendarControlPanel/ControlPanelWeek';
 import { ControlPanelYears } from 'components/CalendarControlPanel/ControlPanelYears';
+import { monthsView, monthView, weekView, yearsView } from 'constants/calendarViews';
 import React, { FC, memo } from 'react';
 
 import { CalendarControlPanelProps } from './interfaces';
@@ -26,7 +27,7 @@ export const CalendarControlPanel: FC<CalendarControlPanelProps> = memo((props) 
   CalendarControlPanel.displayName = 'CalendarControlPanel';
 
   switch (calendarView) {
-    case 'month': {
+    case monthView: {
       return (
         <ControlPanelContainer>
           <ControlPanelFullMonth
@@ -40,7 +41,7 @@ export const CalendarControlPanel: FC<CalendarControlPanelProps> = memo((props) 
         </ControlPanelContainer>
       );
     }
-    case 'week': {
+    case weekView: {
       return (
         <ControlPanelContainer>
           <ControlPanelWeek
@@ -55,7 +56,7 @@ export const CalendarControlPanel: FC<CalendarControlPanelProps> = memo((props) 
         </ControlPanelContainer>
       );
     }
-    case 'months': {
+    case monthsView: {
       return (
         <ControlPanelContainer>
           <ControlPanelMonth
@@ -68,7 +69,7 @@ export const CalendarControlPanel: FC<CalendarControlPanelProps> = memo((props) 
         </ControlPanelContainer>
       );
     }
-    case 'years': {
+    case yearsView: {
       return (
         <ControlPanelContainer>
           <ControlPanelYears

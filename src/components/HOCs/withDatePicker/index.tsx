@@ -12,14 +12,16 @@ const { unselectedDate } = config;
 
 export const withDatePicker = (WrappedComponent: FC<CalendarAllProps>) => {
   const ComponentWithInput = (props: DefaultProps) => {
-    const [selectedDay, setSelectedDay] = useState(props.selectedDay || new Date());
+    const { defaultSelectedDay } = props;
+
+    const [selectedDay, setSelectedDay] = useState(defaultSelectedDay || new Date());
     const [inputValue, setInputValue] = useState('');
     const [isNotValid, setIsNotValid] = useState(false);
 
     useEffect(() => {
-      setSelectedDay(props.selectedDay || new Date(unselectedDate));
-      setInputValue(props.selectedDay?.toLocaleDateString() || '');
-    }, [props.selectedDay]);
+      setSelectedDay(defaultSelectedDay || new Date(unselectedDate));
+      setInputValue(defaultSelectedDay?.toLocaleDateString() || '');
+    }, [defaultSelectedDay]);
 
     const handleClearButton = (): void => {
       setSelectedDay(new Date());
@@ -27,9 +29,14 @@ export const withDatePicker = (WrappedComponent: FC<CalendarAllProps>) => {
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { day, month, year, date } = parseDate(e);
+      const { day, month, year, date, inputValue } = parseDate(e);
 
-      if (date.getDate() === day && date.getMonth() === month && date.getFullYear() === year) {
+      if (
+        date.getDate() === day &&
+        date.getMonth() === month &&
+        date.getFullYear() === year &&
+        date.getFullYear() <= 9999
+      ) {
         setSelectedDay(date);
         setIsNotValid(false);
       } else {
@@ -42,9 +49,8 @@ export const withDatePicker = (WrappedComponent: FC<CalendarAllProps>) => {
       const stringDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
       setSelectedDay(date);
       setInputValue(stringDate);
+      setIsNotValid(false);
     };
-
-    const isInputHaveValue: boolean = !!inputValue;
 
     return (
       <ThemeProvider theme={theme}>
@@ -62,7 +68,7 @@ export const withDatePicker = (WrappedComponent: FC<CalendarAllProps>) => {
             {...props}
             handleSelectDay={handleSelectDay}
             selectedDay={selectedDay}
-            isInputHaveValue={isInputHaveValue}
+            isInputHaveValue={!!inputValue}
           />
           {inputValue && <ClearButton onClick={handleClearButton}>Clear all</ClearButton>}
         </WithDatePicker>

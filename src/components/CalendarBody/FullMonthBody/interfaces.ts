@@ -7,4 +7,5 @@ export interface FullMonthBodyProps {
   handleSelectDay?: (date: Date) => void;
   selectedFirstDay?: Date;
   selectedSecondDay?: Date;
+  holidayColor: string;
 }

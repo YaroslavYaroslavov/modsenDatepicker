@@ -1,8 +1,10 @@
 import { CalendarBody } from 'components/CalendarBody';
 import { CalendarControlPanel } from 'components/CalendarControlPanel';
 import { CalendarWeekPanel } from 'components/CalendarWeekPanel';
+import { monthsView, monthView } from 'constants/calendarViews';
 import { theme } from 'constants/theme';
 import { generateDecade } from 'helpers/generateDecade';
+import { updateYearAndMonth } from 'helpers/updateYearsAndMonth';
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
@@ -35,14 +37,14 @@ export const Calendar: FC<CalendarAllProps> = memo((props) => {
     minCalendarYear = defaultMinCalendarYear,
     defaultMonth = new Date().getMonth(),
     defaultYear = new Date().getFullYear(),
-    defaultCalendarView = 'month',
+    defaultCalendarView = monthView,
     selectedFirstDay,
     selectedSecondDay,
     withTodos = false,
+    holidayColor = '#ff00e6',
   } = props;
 
   Calendar.displayName = 'Calendar';
-
   if (
     defaultYear > maxCalendarYear ||
     defaultYear < minCalendarYear ||
@@ -66,39 +68,32 @@ export const Calendar: FC<CalendarAllProps> = memo((props) => {
   }, [defaultMonth, defaultYear, defaultCalendarView]);
 
   useEffect(() => {
-    if (
-      selectedDay &&
-      selectedDay.getFullYear() <= maxCalendarYear &&
-      selectedDay.getFullYear() >= minCalendarYear &&
-      selectedDay.getTime() !== noDate
-    ) {
-      setMonth(selectedDay.getMonth());
-      setYear(selectedDay.getFullYear());
-    }
+    if (selectedDay)
+      updateYearAndMonth(selectedDay, setYear, setMonth, maxCalendarYear, minCalendarYear, noDate);
   }, [selectedDay]);
 
   useEffect(() => {
-    if (
-      selectedFirstDay &&
-      selectedFirstDay.getFullYear() <= maxCalendarYear &&
-      selectedFirstDay.getFullYear() >= minCalendarYear &&
-      selectedFirstDay?.getTime() !== noDate
-    ) {
-      setYear(selectedFirstDay.getFullYear());
-      setMonth(selectedFirstDay.getMonth());
-    }
+    if (selectedFirstDay)
+      updateYearAndMonth(
+        selectedFirstDay,
+        setYear,
+        setMonth,
+        maxCalendarYear,
+        minCalendarYear,
+        noDate
+      );
   }, [selectedFirstDay]);
 
   useEffect(() => {
-    if (
-      selectedSecondDay &&
-      selectedSecondDay.getFullYear() <= maxCalendarYear &&
-      selectedSecondDay.getFullYear() >= minCalendarYear &&
-      selectedSecondDay?.getTime() !== noDate
-    ) {
-      setYear(selectedSecondDay.getFullYear());
-      setMonth(selectedSecondDay.getMonth());
-    }
+    if (selectedSecondDay)
+      updateYearAndMonth(
+        selectedSecondDay,
+        setYear,
+        setMonth,
+        maxCalendarYear,
+        minCalendarYear,
+        noDate
+      );
   }, [selectedSecondDay]);
 
   const currentDecadeYears = generateDecade(minCalendarYear, maxCalendarYear, year);
@@ -180,7 +175,7 @@ export const Calendar: FC<CalendarAllProps> = memo((props) => {
     (e: React.MouseEvent<HTMLElement>): void => {
       const MonthCell = e.target as HTMLInputElement;
       setMonth(Number(MonthCell.id));
-      setCalendarView('month');
+      setCalendarView(monthView);
     },
     [setMonth, setCalendarView]
   );
@@ -189,7 +184,7 @@ export const Calendar: FC<CalendarAllProps> = memo((props) => {
     (e: React.MouseEvent<HTMLElement>): void => {
       const YearCell = e.target as HTMLInputElement;
       setYear(Number(YearCell.textContent));
-      setCalendarView('months');
+      setCalendarView(monthsView);
     },
     [setYear, setCalendarView]
   );
@@ -229,6 +224,7 @@ export const Calendar: FC<CalendarAllProps> = memo((props) => {
           setIsFirstWeek={setIsFirstWeek}
           weekCounter={weekCounter}
           currentDecadeYears={currentDecadeYears}
+          holidayColor={holidayColor}
         />
       </CalendarContainer>
     </ThemeProvider>

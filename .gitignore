@@ -1,6 +1,6 @@
 *.log
-/build
 .env
-/node_modules
-/dist
+/build
+node_modules
+dist
 /storybook-static

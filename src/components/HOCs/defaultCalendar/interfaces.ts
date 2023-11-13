@@ -10,4 +10,5 @@ export interface DefaultProps {
   defaultCalendarView: CalendarView;
   selectedFirstDay: Date;
   selectedSecondDay: Date;
+  holidayColor: string;
 }

@@ -5,7 +5,8 @@ export const getColor = (
   isToday: string,
   isHoliday: string,
   isWeekend: string,
-  isCurrentMonth: string
+  isCurrentMonth: string,
+  holidayColor: string
 ): string => {
   switch (true) {
     case isSelectedDay === 'true':
@@ -13,7 +14,7 @@ export const getColor = (
     case isToday === 'true':
       return theme.colorToday;
     case isHoliday === 'true':
-      return theme.colorHoliday;
+      return holidayColor;
     case isWeekend === 'true':
       return theme.colorWeekend;
     case isCurrentMonth === 'true':

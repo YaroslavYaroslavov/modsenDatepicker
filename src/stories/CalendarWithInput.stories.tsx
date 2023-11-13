@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Calendar } from 'components/Calendar';
 import { withDatePicker } from 'components/HOCs/withDatePicker';
+import { weekView, monthView, monthsView, yearsView } from 'constants/calendarViews';
 
 const CalendarWithInput = withDatePicker(Calendar);
 
@@ -8,11 +9,17 @@ const meta: Meta<typeof CalendarWithInput> = {
   component: CalendarWithInput,
   argTypes: {
     defaultCalendarView: {
-      options: ['week', 'month', 'months', 'years'],
+      options: [weekView, monthView, monthsView, yearsView],
       control: { type: 'radio' },
     },
-    selectedDay: {
-      options: [new Date(), new Date(2003, 6, 13), new Date(2004, 8, 17), undefined],
+    defaultSelectedDay: {
+      options: ['today', '2003.7.13', '2004.9.17', 'noDate'],
+      mapping: {
+        today: new Date(),
+        '2003.7.13': new Date(2003, 6, 13),
+        '2004.9.17': new Date(2004, 8, 17),
+        noDate: undefined,
+      },
       control: { type: 'radio' },
     },
   },
@@ -29,37 +36,37 @@ export const Default: Story = {
 export const Week: Story = {
   name: 'Calendar week view',
   args: {
-    defaultCalendarView: 'week',
+    defaultCalendarView: weekView,
   },
 };
 export const Month: Story = {
   name: 'Calendar month view',
   args: {
-    defaultCalendarView: 'month',
+    defaultCalendarView: monthView,
   },
 };
 export const Months: Story = {
   name: 'Calendar months view',
   args: {
-    defaultCalendarView: 'months',
+    defaultCalendarView: monthsView,
   },
 };
 export const Years: Story = {
   name: 'Calendar months view',
   args: {
-    defaultCalendarView: 'years',
+    defaultCalendarView: yearsView,
   },
 };
 export const WithTodos: Story = {
   name: 'Calendar WithTodos view',
   args: {
-    defaultCalendarView: 'month',
+    defaultCalendarView: monthView,
     withTodos: true,
   },
 };
 export const WithPreSelectedDay: Story = {
   name: 'Calendar WithPreSelectedDay view',
   args: {
-    selectedDay: new Date(0),
+    defaultSelectedDay: new Date(0),
   },
 };

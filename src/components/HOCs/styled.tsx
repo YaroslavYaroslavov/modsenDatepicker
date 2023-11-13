@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 type StyledComponentProps = {
   isnotvalid?: string;
 };
@@ -8,37 +9,44 @@ export const ClearButton = styled.button`
   height: 25px;
   margin: 0;
   border-radius: 0 0 7px 7px;
-  background-color: ${(props) => props.theme.colorHoverControl};
-  border: ${(props) => props.theme.defaultBorder};
+  background-color: ${({ theme }) => theme.colorHoverControl};
+  border: ${({ theme }) => theme.defaultBorder};
   border-top: 0px;
   height: 40px;
-  font-family: ${(props) => props.theme.globalFont};
+  font-family: ${({ theme }) => theme.globalFont};
   &:hover {
-    color: ${(props) => props.theme.backgroundColorHoverCell};
-    background-color: ${(props) => props.theme.backgroundColorHoverControl};
+    color: ${({ theme }) => theme.backgroundColorHoverCell};
+    background-color: ${({ theme }) => theme.backgroundColorHoverControl};
   }
 `;
 export const WithDatePicker = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: ${(props) => props.theme.containerWidth};
+
+  width: ${({ theme }) => theme.containerWidth};
 `;
 export const InputDate = styled.input<StyledComponentProps>`
   margin-bottom: 10px;
-  border: ${(props) => props.theme.defaultBorder};
   border-radius: 5px;
   width: 200px;
   padding-left: 25px;
   padding-right: 25px;
   height: 30px;
   font-size: 15px;
-  font-family: ${(props) => props.theme.globalFont};
-  color: ${(props) =>
-    props.isnotvalid === 'true' ? props.theme.isNotValid : props.theme.controlPanelColor};
-  border-color: ${(props) =>
-    props.isnotvalid === 'true' ? props.theme.isNotValid : props.theme.inputEmpty};
-  animation: ${(props) => (props.isnotvalid === 'true' ? 'shake 10s infinite' : 'none')};
+
+  border: ${({ theme }) => theme.defaultBorder};
+
+  font-family: ${({ theme }) => theme.globalFont};
+
+  color: ${({ theme, isnotvalid }) =>
+    isnotvalid === 'true' ? theme.isNotValid : theme.controlPanelColor};
+
+  border-color: ${({ theme, isnotvalid }) =>
+    isnotvalid === 'true' ? theme.isNotValid : theme.inputEmpty};
+
+  animation: ${({ isnotvalid }) => (isnotvalid === 'true' ? 'shake 10s infinite' : 'none')};
+
   @keyframes shake {
     0% {
       transform: translateX(0);

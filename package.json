@@ -18,9 +18,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint,prettier",
-      "pre-push": "test"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.tsx, .ts": [
+      "npm run lint:fix",
+      "git add"
+    ]
   },
   "author": "https://github.com/YaroslavYaroslavov",
   "license": "ISC",
@@ -58,6 +63,7 @@
     "@typescript-eslint/parser": "^6.9.0",
     "babel-jest": "^29.7.0",
     "eslint": "^8.51.0",
+    "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-storybook": "^0.6.15",
@@ -65,11 +71,13 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-styled-components": "^7.2.0",
+    "lint-staged": "^15.1.0",
     "prettier": "3.0.3",
     "rollup": "^4.0.2",
     "rollup-plugin-dev": "^2.0.4",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "storybook": "^7.5.1",
+    "storybook-color-picker": "^4.0.0",
     "ts-jest": "^29.1.1",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2",

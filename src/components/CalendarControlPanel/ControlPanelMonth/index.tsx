@@ -1,4 +1,5 @@
 import { Button } from 'components/CalendarControlPanel/Button';
+import { yearsView } from 'constants/calendarViews';
 import React, { FC, memo } from 'react';
 
 import { ControlPanelHeader, ControlPanelWrapper } from '../styled';
@@ -18,11 +19,7 @@ export const ControlPanelMonth: FC<ControlPanelMonthProps> = memo((props) => {
       {year === minCalendarYear ? null : (
         <Button panel={'months'} callback={handleChangeYear} isSetNextButton={false} />
       )}
-      <ControlPanelHeader
-        onClick={() => {
-          setCalendarView('years');
-        }}
-      >
+      <ControlPanelHeader onClick={setCalendarView.bind(this, yearsView)}>
         {year}
       </ControlPanelHeader>
       {year === maxCalendarYear ? null : (

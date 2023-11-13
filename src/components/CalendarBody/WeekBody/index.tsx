@@ -1,5 +1,5 @@
 import { getMonthArray } from 'helpers/getMonthArray';
-import React, { FC, memo, useEffect } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 
 import { CalendarCell } from '../CalendarCell';
 import { CalendarBodyWrapper } from '../styled';
@@ -21,13 +21,44 @@ export const WeekBody: FC<WeekBodyProps> = memo((props) => {
     selectedFirstDay,
     selectedSecondDay,
     toggleTodoList,
+    holidayColor,
   } = props;
+
   WeekBody.displayName = 'WeekBody';
+
   const monthBody = getMonthArray(month, year, startOnMonday);
+
   const monthBodyClearWeeks = monthBody.filter((week) => {
     return week.some((date) => date.isCurrentMonth === true);
   });
-  const currentWeek = monthBodyClearWeeks.at(weekCounter % monthBodyClearWeeks.length);
+
+  const findWeekIndexByDate = (
+    date: Date,
+    monthBodyClearWeeks: {
+      date: Date;
+      isCurrentMonth: boolean;
+    }[][]
+  ) => {
+    let index = 0;
+    monthBodyClearWeeks.forEach((week, i) => {
+      week.forEach((day: { date: Date }) => {
+        if (day.date.getDate() === date.getDate()) {
+          index = i;
+        }
+      });
+    });
+    return index;
+  };
+
+  const getStartWeek = () => {
+    if (selectedDay) {
+      return monthBodyClearWeeks[findWeekIndexByDate(selectedDay, monthBodyClearWeeks)];
+    } else {
+      return monthBodyClearWeeks.at(weekCounter % monthBodyClearWeeks.length);
+    }
+  };
+
+  const [currentWeek, setCurrentWeek] = useState(getStartWeek());
 
   useEffect(() => {
     if (weekCounter % monthBodyClearWeeks.length === fisrWeekIndex) {
@@ -44,7 +75,24 @@ export const WeekBody: FC<WeekBodyProps> = memo((props) => {
       setIsFirstWeek(false);
       setIsLastWeek(false);
     }
+    setCurrentWeek(monthBodyClearWeeks.at(weekCounter % monthBodyClearWeeks.length));
   }, [weekCounter, month, year]);
+
+  useEffect(() => {
+    if (selectedDay) {
+      setCurrentWeek(monthBodyClearWeeks[findWeekIndexByDate(selectedDay, monthBodyClearWeeks)]);
+    }
+    if (selectedFirstDay) {
+      setCurrentWeek(
+        monthBodyClearWeeks[findWeekIndexByDate(selectedFirstDay, monthBodyClearWeeks)]
+      );
+    }
+    if (selectedSecondDay) {
+      setCurrentWeek(
+        monthBodyClearWeeks[findWeekIndexByDate(selectedSecondDay, monthBodyClearWeeks)]
+      );
+    }
+  }, [selectedDay, selectedFirstDay, selectedSecondDay, month, year]);
 
   return (
     <CalendarBodyWrapper>
@@ -57,6 +105,7 @@ export const WeekBody: FC<WeekBodyProps> = memo((props) => {
           selectedDay={selectedDay}
           date={date}
           isCurrentMonth={isCurrentMonth}
+          holidayColor={holidayColor}
           handleSelectDay={handleSelectDay}
         />
       ))}

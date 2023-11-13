@@ -15,5 +15,6 @@ export interface CalendarBodyProps {
   handleSelectYear: (e: React.MouseEvent<HTMLElement>) => void;
   currentDecadeYears: number[];
   selectedFirstDay?: Date;
+  holidayColor: string;
   selectedSecondDay?: Date;
 }

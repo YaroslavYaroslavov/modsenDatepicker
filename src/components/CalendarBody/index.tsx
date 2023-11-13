@@ -1,4 +1,5 @@
 import { ToDoContainer } from 'components/TodoContainer';
+import { monthsView, monthView, weekView, yearsView } from 'constants/calendarViews';
 import React, { FC, memo, useState } from 'react';
 
 import { FullMonthBody } from './FullMonthBody';
@@ -25,6 +26,7 @@ export const CalendarBody: FC<CalendarBodyProps> = memo((props) => {
     selectedSecondDay,
     currentDecadeYears,
     withTodos,
+    holidayColor,
   } = props;
 
   CalendarBody.displayName = 'CalendarBody';
@@ -35,7 +37,7 @@ export const CalendarBody: FC<CalendarBodyProps> = memo((props) => {
   };
 
   switch (calendarView) {
-    case 'month': {
+    case monthView: {
       return (
         <CalendarBodyContainer>
           <FullMonthBody
@@ -47,13 +49,14 @@ export const CalendarBody: FC<CalendarBodyProps> = memo((props) => {
             selectedDay={selectedDay}
             handleSelectDay={handleSelectDay}
             toggleTodoList={toggleTodoList}
+            holidayColor={holidayColor}
           />
           {withTodos && selectedDay && todoListOpen && <ToDoContainer selectedDay={selectedDay} />}
         </CalendarBodyContainer>
       );
     }
 
-    case 'week': {
+    case weekView: {
       return (
         <CalendarBodyContainer>
           <WeekBody
@@ -67,20 +70,21 @@ export const CalendarBody: FC<CalendarBodyProps> = memo((props) => {
             weekCounter={weekCounter}
             setIsLastWeek={setIsLastWeek}
             setIsFirstWeek={setIsFirstWeek}
+            holidayColor={holidayColor}
             toggleTodoList={toggleTodoList}
           />
           {withTodos && selectedDay && todoListOpen && <ToDoContainer selectedDay={selectedDay} />}
         </CalendarBodyContainer>
       );
     }
-    case 'months': {
+    case monthsView: {
       return (
         <CalendarBodyContainer>
           <MonthBody handleSelectMonth={handleSelectMonth} />;
         </CalendarBodyContainer>
       );
     }
-    case 'years': {
+    case yearsView: {
       return (
         <CalendarBodyContainer>
           <YearsBody

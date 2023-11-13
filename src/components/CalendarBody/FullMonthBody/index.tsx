@@ -15,6 +15,7 @@ export const FullMonthBody: FC<FullMonthBodyProps> = memo((props) => {
     selectedFirstDay,
     selectedSecondDay,
     toggleTodoList,
+    holidayColor,
   } = props;
 
   FullMonthBody.displayName = 'FullMonthBody';
@@ -26,6 +27,7 @@ export const FullMonthBody: FC<FullMonthBodyProps> = memo((props) => {
       {monthBody.map((week) => {
         return week.map(({ date, isCurrentMonth }) => (
           <CalendarCell
+            holidayColor={holidayColor}
             toggleTodoList={toggleTodoList}
             selectedFirstDay={selectedFirstDay}
             selectedSecondDay={selectedSecondDay}

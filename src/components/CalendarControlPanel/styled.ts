@@ -3,9 +3,10 @@ import styled from 'styled-components';
 export const ControlPanelContainer = styled.div`
   display: flex;
   align-items: center;
-  font-family: ${(props) => props.theme.globalFont};
   justify-content: space-evenly;
   height: 55px;
+
+  font-family: ${({ theme }) => theme.globalFont};
 `;
 
 export const ControlPanelWrapper = styled.div`
@@ -18,9 +19,10 @@ export const ControlPanelHeader = styled.div`
   display: flex;
   justify-content: center;
   cursor: pointer;
+
   &:hover {
-    color: ${(props) => props.theme.colorHoverControl};
-    background-color: ${(props) => props.theme.backgroundColorHoverControl};
+    color: ${({ theme }) => theme.colorHoverControl};
+    background-color: ${({ theme }) => theme.backgroundColorHoverControl};
     border-radius: 7px;
   }
 `;

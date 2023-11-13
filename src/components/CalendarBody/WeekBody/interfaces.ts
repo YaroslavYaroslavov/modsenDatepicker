@@ -10,4 +10,5 @@ export interface WeekBodyProps {
   setIsFirstWeek: (isFirstDay: boolean) => void;
   selectedFirstDay?: Date;
   selectedSecondDay?: Date;
+  holidayColor: string;
 }

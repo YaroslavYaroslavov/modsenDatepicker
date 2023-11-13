@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Calendar } from 'components/Calendar';
 import { getDefaultCalendar } from 'components/HOCs/defaultCalendar';
+import { monthsView, monthView, weekView, yearsView } from 'constants/calendarViews';
 
 const MyCalendar = getDefaultCalendar(Calendar);
 
@@ -8,7 +9,7 @@ const meta: Meta<typeof MyCalendar> = {
   component: MyCalendar,
   argTypes: {
     defaultCalendarView: {
-      options: ['week', 'month', 'months', 'years'],
+      options: [monthsView, monthView, weekView, yearsView],
       control: { type: 'radio' },
     },
     selectedDay: {
@@ -33,6 +34,7 @@ type Story = StoryObj<typeof MyCalendar>;
 export const Default: Story = {
   name: 'Custom Calendar',
   args: {
+    holidayColor: '#ff00e6',
     defaultMonth: 0,
     defaultYear: 2023,
     minCalendarYear: 2000,

@@ -7,21 +7,48 @@ import styled from 'styled-components';
 import { StyledComponentProps } from './interfaces';
 
 export const CellContainer = styled.div<StyledComponentProps>`
+  ${centerByFlex}
   width: 32px;
   height: 32px;
   user-select: none;
-  ${centerByFlex}
-  font-family: ${(props) => props.theme.globalFont};
+  font-family: ${({ theme }) => theme.globalFont};
+
   &:hover {
-    background-color: ${(props) => props.theme.backgroundColorHoverCell};
-    color: ${(props) => props.theme.colorHoverCell};
+    background-color: ${({ theme }) => theme.backgroundColorHoverCell};
+    color: ${({ theme }) => theme.colorHoverCell};
   }
-  color: ${({ isselectedday, istoday, isholiday, isweekend, iscurrentmonth }) =>
-    getColor(isselectedday, istoday, isholiday, isweekend, iscurrentmonth)};
 
-  background-color: ${({ isfirstday, issecondday, isbetweenselecteddays, isselectedday }) =>
-    getBackgroundColor(isfirstday, issecondday, isbetweenselecteddays, isselectedday)};
+  ${({
+    isselectedday,
+    istoday,
+    isholiday,
+    isweekend,
+    iscurrentmonth,
+    holidaycolor,
+    isfirstday,
+    issecondday,
+    isbetweenselecteddays,
+  }) => {
+    const bgColor = getBackgroundColor(
+      isfirstday,
+      issecondday,
+      isbetweenselecteddays,
+      isselectedday
+    );
+    const borderRadius = getBorderRadius(isfirstday, issecondday, isbetweenselecteddays);
+    const textColor = getColor(
+      isselectedday,
+      istoday,
+      isholiday,
+      isweekend,
+      iscurrentmonth,
+      holidaycolor
+    );
 
-  border-radius: ${({ isfirstday, issecondday, isbetweenselecteddays }) =>
-    getBorderRadius(isfirstday, issecondday, isbetweenselecteddays)};
+    return `
+      color: ${textColor};
+      background-color: ${bgColor};
+      border-radius: ${borderRadius};
+    `;
+  }}
 `;
