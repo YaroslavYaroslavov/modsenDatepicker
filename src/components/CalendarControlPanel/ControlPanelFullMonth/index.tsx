@@ -20,15 +20,18 @@ export const ControlPanelFullMonth: FC<ControlPanelFullMonthProps> = memo((props
   } = props;
   ControlPanelFullMonth.displayName = 'ControlPanelFullMonth';
 
+  const isFirstList = month === firstMonthIndex && year === minCalendarYear;
+  const isLastList = month === lastMonthIndex && year === maxCalendarYear;
+
   return (
     <ControlPanelWrapper>
-      {month === firstMonthIndex && year === minCalendarYear ? null : (
+      {isFirstList ? null : (
         <Button panel={monthView} callback={handleChangeMonth} isSetNextButton={false} />
       )}
       <ControlPanelHeader onClick={setCalendarView.bind(this, monthsView)}>
         {monthName[month % monthName.length]} {year}
       </ControlPanelHeader>
-      {month === lastMonthIndex && year === maxCalendarYear ? null : (
+      {isLastList ? null : (
         <Button panel={monthView} callback={handleChangeMonth} isSetNextButton={true} />
       )}
     </ControlPanelWrapper>

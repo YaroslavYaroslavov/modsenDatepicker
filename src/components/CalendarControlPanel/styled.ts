@@ -1,8 +1,9 @@
+import { flexAlignCenter } from 'constants/reuseStyles';
 import styled from 'styled-components';
 
-export const ControlPanelContainer = styled.div`
-  display: flex;
-  align-items: center;
+export const ControlPanelContainer = styled.header`
+  ${flexAlignCenter}
+
   justify-content: space-evenly;
   height: 55px;
 
@@ -10,8 +11,7 @@ export const ControlPanelContainer = styled.div`
 `;
 
 export const ControlPanelWrapper = styled.div`
-  display: flex;
-  align-items: center;
+  ${flexAlignCenter}
 `;
 
 export const ControlPanelHeader = styled.div`

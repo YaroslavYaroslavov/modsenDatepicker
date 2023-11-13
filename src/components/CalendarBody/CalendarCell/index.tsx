@@ -46,12 +46,6 @@ export const CalendarCell: FC<CalendarCellProps> = memo((props) => {
 
   const isSecondDay: boolean = date.toDateString() === selectedSecondDay?.toDateString();
 
-  const selectDate = handleSelectDay
-    ? () => {
-        handleSelectDay(date);
-      }
-    : () => {};
-
   return (
     <CellContainer
       holidaycolor={holidayColor}
@@ -63,7 +57,7 @@ export const CalendarCell: FC<CalendarCellProps> = memo((props) => {
       isbetweenselecteddays={isBetweenSelectedDays.toString()}
       issecondday={isSecondDay.toString()}
       iscurrentmonth={isCurrentMonth.toString()}
-      onClick={selectDate}
+      onClick={handleSelectDay?.bind(this, date)}
       onDoubleClick={toggleTodoList}
     >
       {date.getDate()}

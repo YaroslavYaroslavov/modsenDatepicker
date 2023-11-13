@@ -6,10 +6,13 @@ import styled from 'styled-components';
 
 import { StyledComponentProps } from './interfaces';
 
+const CellContainerSideLength = '32px';
+
 export const CellContainer = styled.div<StyledComponentProps>`
   ${centerByFlex}
-  width: 32px;
-  height: 32px;
+
+  width: ${CellContainerSideLength};
+  height: ${CellContainerSideLength};
   user-select: none;
   font-family: ${({ theme }) => theme.globalFont};
 

@@ -8,16 +8,23 @@ import { ControlPanelYearsProps } from './interfaces';
 const { currentDecadeYearsIndexEndReverse, currentDecadeYearsIndexStart } = config;
 export const ControlPanelYears: FC<ControlPanelYearsProps> = memo((props) => {
   const { minCalendarYear, maxCalendarYear, currentDecadeYears, handleChangeDecade } = props;
+
   ControlPanelYears.displayName = 'ControlPanelYears';
+
+  const isFirstList = minCalendarYear === currentDecadeYears?.at(currentDecadeYearsIndexStart);
+  const isLastList = maxCalendarYear === currentDecadeYears?.at(currentDecadeYearsIndexEndReverse);
+
   return (
     <ControlPanelWrapper>
-      {minCalendarYear === currentDecadeYears?.at(currentDecadeYearsIndexStart) ? null : (
+      {isFirstList ? null : (
         <Button panel={'years'} callback={handleChangeDecade} isSetNextButton={false} />
       )}
+
       <ControlPanelHeader>{`${currentDecadeYears?.at(
         currentDecadeYearsIndexStart
       )} - ${currentDecadeYears?.at(currentDecadeYearsIndexEndReverse)}`}</ControlPanelHeader>
-      {maxCalendarYear === currentDecadeYears?.at(currentDecadeYearsIndexEndReverse) ? null : (
+
+      {isLastList ? null : (
         <Button panel={'years'} callback={handleChangeDecade} isSetNextButton={true} />
       )}
     </ControlPanelWrapper>

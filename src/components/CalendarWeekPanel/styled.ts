@@ -1,6 +1,8 @@
 import { centerByFlex } from 'constants/reuseStyles';
 import styled from 'styled-components';
 
+const weekPanelCellSideLength = '32px';
+
 export const WeekPanelContainer = styled.div`
   ${centerByFlex}
 
@@ -9,6 +11,6 @@ export const WeekPanelContainer = styled.div`
 export const WeekPanelCell = styled.div`
   ${centerByFlex}
 
-  width: 32px;
-  height: 32px;
+  width: ${weekPanelCellSideLength};
+  height: ${weekPanelCellSideLength};
 `;

@@ -1,3 +1,4 @@
+import { cellParams, centerByFlexColumn } from 'constants/reuseStyles';
 import styled from 'styled-components';
 
 type StyledComponentProps = {
@@ -6,8 +7,8 @@ type StyledComponentProps = {
 
 export const ClearButton = styled.button`
   width: 100%;
-  height: 25px;
   margin: 0;
+  height: 25px;
   border-radius: 0 0 7px 7px;
   background-color: ${({ theme }) => theme.colorHoverControl};
   border: ${({ theme }) => theme.defaultBorder};
@@ -20,9 +21,7 @@ export const ClearButton = styled.button`
   }
 `;
 export const WithDatePicker = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${centerByFlexColumn}
 
   width: ${({ theme }) => theme.containerWidth};
 `;
@@ -30,10 +29,9 @@ export const InputDate = styled.input<StyledComponentProps>`
   margin-bottom: 10px;
   border-radius: 5px;
   width: 200px;
-  padding-left: 25px;
-  padding-right: 25px;
-  height: 30px;
-  font-size: 15px;
+  padding: 0 25px;
+
+  ${cellParams}
 
   border: ${({ theme }) => theme.defaultBorder};
 

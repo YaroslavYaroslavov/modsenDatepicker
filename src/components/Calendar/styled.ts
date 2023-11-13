@@ -1,10 +1,10 @@
 import { StyledComponentProps } from 'components/Calendar/interfaces';
+import { centerByFlexColumn } from 'constants/reuseStyles';
 import styled from 'styled-components';
 
 export const CalendarContainer = styled.div<StyledComponentProps>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${centerByFlexColumn}
+
   box-sizing: border-box;
   padding-bottom: 10px;
 
@@ -12,6 +12,6 @@ export const CalendarContainer = styled.div<StyledComponentProps>`
 
   border: ${({ theme }) => theme.defaultBorder};
 
-  border-radius: ${(props) =>
-    props.isclearbuttonvisible === 'false' ? '10px 10px 10px 10px' : '10px 10px 0 0'};
+  border-radius: ${({ isclearbuttonvisible }) =>
+    isclearbuttonvisible === 'false' ? '10px 10px 10px 10px' : '10px 10px 0 0'};
 `;

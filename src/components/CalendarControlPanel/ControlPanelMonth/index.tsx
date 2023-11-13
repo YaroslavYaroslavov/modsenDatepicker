@@ -13,16 +13,21 @@ export const ControlPanelMonth: FC<ControlPanelMonthProps> = memo((props) => {
     maxCalendarYear,
     setCalendarView,
   } = props;
+
   ControlPanelMonth.displayName = 'ControlPanelMonth';
+
+  const isLastList = year === maxCalendarYear;
+  const isFirstList = year === minCalendarYear;
+
   return (
     <ControlPanelWrapper>
-      {year === minCalendarYear ? null : (
+      {isFirstList ? null : (
         <Button panel={'months'} callback={handleChangeYear} isSetNextButton={false} />
       )}
       <ControlPanelHeader onClick={setCalendarView.bind(this, yearsView)}>
         {year}
       </ControlPanelHeader>
-      {year === maxCalendarYear ? null : (
+      {isLastList ? null : (
         <Button panel={'months'} callback={handleChangeYear} isSetNextButton={true} />
       )}
     </ControlPanelWrapper>

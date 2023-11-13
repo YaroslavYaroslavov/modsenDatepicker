@@ -19,16 +19,21 @@ export const ControlPanelWeek: FC<ControlPanelWeekProps> = memo((props) => {
 
     isLastWeek,
   } = props;
+
   ControlPanelWeek.displayName = 'ControlPanelWeek';
+
+  const isLastList = month === lastMonthIndex && year === maxCalendarYear && isLastWeek;
+  const isFirstList = month === firstMonthIndex && year === minCalendarYear && isFirstWeek;
+
   return (
     <ControlPanelWrapper>
-      {month === firstMonthIndex && year === minCalendarYear && isFirstWeek ? null : (
+      {isFirstList ? null : (
         <Button panel={'week'} callback={handleChangeWeek} isSetNextButton={false} />
       )}
       <ControlPanelHeader>
         {monthName[month % monthName.length]} {year}
       </ControlPanelHeader>
-      {month === lastMonthIndex && year === maxCalendarYear && isLastWeek ? null : (
+      {isLastList ? null : (
         <Button panel={'week'} callback={handleChangeWeek} isSetNextButton={true} />
       )}
     </ControlPanelWrapper>

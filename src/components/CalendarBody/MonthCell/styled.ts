@@ -1,4 +1,4 @@
-import { centerByFlex } from 'constants/reuseStyles';
+import { cellParams, centerByFlex } from 'constants/reuseStyles';
 import styled from 'styled-components';
 
 export const MonthCellContainer = styled.div`
@@ -7,8 +7,8 @@ export const MonthCellContainer = styled.div`
   font-family: ${({ theme }) => theme.globalFont};
 
   width: 100px;
-  height: 30px;
-  font-size: 15px;
+  ${cellParams}
+
   cursor: pointer;
 
   &:hover {
