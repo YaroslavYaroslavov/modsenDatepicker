@@ -6,7 +6,7 @@ This library provides a customizable calendar and date picker components.
 
 You can install the package via npm:
 
-`bash npm install jaroslawik-datepicker2 `
+`npm install jaroslawik-datepicker2 `
 
 ## Usage
 
