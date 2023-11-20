@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useRef, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import { Task, ToDoContainerProps } from './interfaces';
 import {
@@ -33,7 +33,7 @@ export const ToDoContainer: FC<ToDoContainerProps> = memo(({ selectedDay }) => {
     }
   }, [allTodosFromLocaleStorage, selectedDay]);
 
-  const handleAddTodo = (): void => {
+  const handleAddTodo = useCallback((): void => {
     if (selectedDay && inputRef.current && inputRef.current.value) {
       const task: Task = {
         day: selectedDay.toLocaleDateString(),
@@ -45,13 +45,16 @@ export const ToDoContainer: FC<ToDoContainerProps> = memo(({ selectedDay }) => {
       setAllTodosFromLocaleStorage((prevState) => [...prevState, task]);
       inputRef.current.value = '';
     }
-  };
+  }, [selectedDay, inputRef, allTodosFromLocaleStorage]);
 
-  const handleDeleteTask = (taskId: number): void => {
-    const updatedTodo = allTodosFromLocaleStorage.filter((task: Task) => task.id !== taskId);
-    localStorage.setItem('todoList', JSON.stringify(updatedTodo));
-    setAllTodosFromLocaleStorage(updatedTodo);
-  };
+  const handleDeleteTask = useCallback(
+    (taskId: number): void => {
+      const updatedTodo = allTodosFromLocaleStorage.filter((task: Task) => task.id !== taskId);
+      localStorage.setItem('todoList', JSON.stringify(updatedTodo));
+      setAllTodosFromLocaleStorage(updatedTodo);
+    },
+    [allTodosFromLocaleStorage]
+  );
 
   return (
     <>

@@ -1,4 +1,5 @@
 import { CalendarAllProps } from 'components/Calendar/interfaces';
+import { onlyNumbersAndDot } from 'constants/regex';
 import { theme } from 'constants/theme';
 import { parseDate } from 'helpers/parseDate';
 import React, { FC, useCallback, useEffect, useState } from 'react';
@@ -44,7 +45,13 @@ export const withRangePicker = (WrappedComponent: FC<CalendarAllProps>) => {
     }, []);
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-      const { day, month, year, date, inputValue } = parseDate(e);
+      const inputValue = e.target.value;
+
+      if (!onlyNumbersAndDot.test(inputValue)) {
+        return;
+      }
+
+      const { day, month, year, date } = parseDate(e);
 
       if (date.getDate() === day && date.getMonth() === month && date.getFullYear() === year) {
         if (e.target.id === 'firstInput') {
@@ -113,6 +120,7 @@ export const withRangePicker = (WrappedComponent: FC<CalendarAllProps>) => {
             onChange={(e) => {
               handleInputChange(e);
             }}
+            pattern="[0-9.]*"
           />
           <InputDate
             isnotvalid={isNotValidSecondInput.toString()}
@@ -123,6 +131,7 @@ export const withRangePicker = (WrappedComponent: FC<CalendarAllProps>) => {
             onChange={(e) => {
               handleInputChange(e);
             }}
+            pattern="[0-9.]*"
           />
 
           <WrappedComponent

@@ -1,4 +1,5 @@
 import { CalendarAllProps } from 'components/Calendar/interfaces';
+import { onlyNumbersAndDot } from 'constants/regex';
 import { theme } from 'constants/theme';
 import { parseDate } from 'helpers/parseDate';
 import React, { FC, useEffect, useState } from 'react';
@@ -29,20 +30,24 @@ export const withDatePicker = (WrappedComponent: FC<CalendarAllProps>) => {
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { day, month, year, date, inputValue } = parseDate(e);
+      const inputValue = e.target.value;
 
-      if (
-        date.getDate() === day &&
-        date.getMonth() === month &&
-        date.getFullYear() === year &&
-        date.getFullYear() <= 9999
-      ) {
-        setSelectedDay(date);
-        setIsNotValid(false);
-      } else {
-        setIsNotValid(true);
+      if (onlyNumbersAndDot.test(inputValue)) {
+        const { day, month, year, date } = parseDate(e);
+
+        if (
+          date.getDate() === day &&
+          date.getMonth() === month &&
+          date.getFullYear() === year &&
+          date.getFullYear() <= 9999
+        ) {
+          setSelectedDay(date);
+          setIsNotValid(false);
+        } else {
+          setIsNotValid(true);
+        }
+        setInputValue(inputValue);
       }
-      setInputValue(inputValue);
     };
 
     const handleSelectDay = (date: Date) => {
@@ -63,6 +68,7 @@ export const withDatePicker = (WrappedComponent: FC<CalendarAllProps>) => {
             onChange={(e) => {
               handleInputChange(e);
             }}
+            pattern="[0-9.]*"
           />
           <WrappedComponent
             {...props}

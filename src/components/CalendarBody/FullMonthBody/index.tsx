@@ -1,5 +1,5 @@
 import { getMonthArray } from 'helpers/getMonthArray';
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 
 import { CalendarCell } from '../CalendarCell';
 import { CalendarBodyWrapper } from '../styled';
@@ -20,7 +20,10 @@ export const FullMonthBody: FC<FullMonthBodyProps> = memo((props) => {
 
   FullMonthBody.displayName = 'FullMonthBody';
 
-  const monthBody = getMonthArray(month, year, startOnMonday);
+  const monthBody = useMemo(
+    () => getMonthArray(month, year, startOnMonday),
+    [month, year, startOnMonday]
+  );
 
   return (
     <CalendarBodyWrapper>

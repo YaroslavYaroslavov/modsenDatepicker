@@ -1,8 +1,9 @@
 import { centerByFlex } from 'constants/reuseStyles';
 import styled from 'styled-components';
 
-export const YearCell = styled.div`
+export const YearCell = styled.span`
   ${centerByFlex}
+
   width: 100px;
   height: 30px;
   font-family: ${({ theme }) => theme.globalFont};

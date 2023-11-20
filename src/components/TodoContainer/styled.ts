@@ -1,12 +1,12 @@
 import { centerByFlex } from 'constants/reuseStyles';
 import styled from 'styled-components';
 
-export const TaskContainer = styled.div`
+export const TaskContainer = styled.footer`
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-around;
 
-  flex-wrap: nowrap;
   margin-top: 10px;
 
   width: ${({ theme }) => theme.containerWidth};

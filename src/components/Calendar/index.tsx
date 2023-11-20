@@ -5,7 +5,7 @@ import { monthsView, monthView } from 'constants/calendarViews';
 import { theme } from 'constants/theme';
 import { generateDecade } from 'helpers/generateDecade';
 import { updateYearAndMonth } from 'helpers/updateYearsAndMonth';
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { config } from './config';
@@ -96,7 +96,9 @@ export const Calendar: FC<CalendarAllProps> = memo((props) => {
       );
   }, [selectedSecondDay]);
 
-  const currentDecadeYears = generateDecade(minCalendarYear, maxCalendarYear, year);
+  const currentDecadeYears = useMemo(() => {
+    return generateDecade(minCalendarYear, maxCalendarYear, year);
+  }, [minCalendarYear, maxCalendarYear, year]);
 
   const handleChangeDecade = useCallback(
     (isSetNextButton: boolean) => {

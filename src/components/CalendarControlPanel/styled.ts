@@ -10,11 +10,11 @@ export const ControlPanelContainer = styled.header`
   font-family: ${({ theme }) => theme.globalFont};
 `;
 
-export const ControlPanelWrapper = styled.div`
+export const ControlPanelWrapper = styled.main`
   ${flexAlignCenter}
 `;
 
-export const ControlPanelHeader = styled.div`
+export const ControlPanelHeader = styled.header`
   width: 190px;
   display: flex;
   justify-content: center;

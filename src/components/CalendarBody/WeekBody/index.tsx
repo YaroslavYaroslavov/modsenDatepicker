@@ -1,5 +1,5 @@
 import { getMonthArray } from 'helpers/getMonthArray';
-import React, { FC, memo, useEffect, useState } from 'react';
+import React, { FC, memo, useEffect, useMemo, useState } from 'react';
 
 import { CalendarCell } from '../CalendarCell';
 import { CalendarBodyWrapper } from '../styled';
@@ -26,11 +26,16 @@ export const WeekBody: FC<WeekBodyProps> = memo((props) => {
 
   WeekBody.displayName = 'WeekBody';
 
-  const monthBody = getMonthArray(month, year, startOnMonday);
+  const monthBody = useMemo(
+    () => getMonthArray(month, year, startOnMonday),
+    [month, year, startOnMonday]
+  );
 
-  const monthBodyClearWeeks = monthBody.filter((week) => {
-    return week.some((date) => date.isCurrentMonth === true);
-  });
+  const monthBodyClearWeeks = useMemo(() => {
+    return monthBody.filter((week) => {
+      return week.some((date) => date.isCurrentMonth === true);
+    });
+  }, [monthBody]);
 
   const findWeekIndexByDate = (
     date: Date,
