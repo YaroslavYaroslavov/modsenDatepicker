@@ -1,78 +1,37 @@
-import { ControlPanelFullMonth } from 'components/ControlPanelFullMonth';
-import { ControlPanelMonth } from 'components/ControlPanelMonth';
-import { ControlPanelWeek } from 'components/ControlPanelWeek';
-import { ControlPanelYears } from 'components/ControlPanelYears';
-import React, { FC } from 'react';
-import styled from 'styled-components';
+import { ControlPanelFullMonth } from 'components/CalendarControlPanel/ControlPanelFullMonth';
+import { ControlPanelMonth } from 'components/CalendarControlPanel/ControlPanelMonth';
+import { ControlPanelWeek } from 'components/CalendarControlPanel/ControlPanelWeek';
+import { ControlPanelYears } from 'components/CalendarControlPanel/ControlPanelYears';
+import { monthsView, monthView, weekView, yearsView } from 'constants/calendarViews';
+import React, { FC, memo } from 'react';
 
-const ControlPanelContainer = styled.div`
-  div {
-    display: flex;
-    align-items: center;
-  }
-  display: flex;
-  align-items: center;
-  font-family: Arial, Helvetica, sans-serif;
-  justify-content: space-evenly;
+import { CalendarControlPanelProps } from './interfaces';
+import { ControlPanelContainer } from './styled';
 
-  h3 {
-    width: 190px;
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-    &:hover {
-      color: white;
-      background-color: #297aec;
-      border-radius: 7px;
-    }
-  }
-`;
-interface CalendarControlPanelProps {
-  month: number;
-  year: number;
-  handleSetToPrevMonth: () => void;
-  handleSetToNextMonth: () => void;
-  handleSetToPrevWeek: () => void;
-  handleSetToNextWeek: () => void;
-  handleSetToPrevYear: () => void;
-  handleSetToNextYear: () => void;
-  handleSetToPrevDecade: () => void;
-  handleSetToNextDecade: () => void;
-  currentDecadeYears: number[];
-  setCalendarView: (arg0: 'week' | 'month' | 'months' | 'years') => void;
-  minCalendarYear: number;
-  maxCalendarYear: number;
-  isLastWeek: boolean;
-  isFirstWeek: boolean;
-  calendarView?: 'week' | 'month' | 'months' | 'years';
-}
+export const CalendarControlPanel: FC<CalendarControlPanelProps> = memo((props) => {
+  const {
+    month = new Date().getMonth(),
+    year = new Date().getFullYear(),
+    handleChangeDecade,
+    handleChangeMonth,
+    handleChangeWeek,
+    handleChangeYear,
+    setCalendarView,
+    currentDecadeYears,
+    minCalendarYear,
+    maxCalendarYear,
+    calendarView,
+    isLastWeek,
+    isFirstWeek,
+  } = props;
+  CalendarControlPanel.displayName = 'CalendarControlPanel';
 
-export const CalendarControlPanel: FC<CalendarControlPanelProps> = ({
-  month = new Date().getMonth(),
-  year = new Date().getFullYear(),
-  handleSetToPrevMonth,
-  handleSetToNextMonth,
-  handleSetToPrevWeek,
-  handleSetToNextWeek,
-  handleSetToNextYear,
-  handleSetToPrevYear,
-  handleSetToPrevDecade,
-  handleSetToNextDecade,
-  setCalendarView,
-  currentDecadeYears,
-  minCalendarYear,
-  maxCalendarYear,
-  calendarView,
-  isLastWeek,
-  isFirstWeek,
-}) => {
   switch (calendarView) {
-    case 'month': {
+    case monthView: {
       return (
         <ControlPanelContainer>
           <ControlPanelFullMonth
-            handleSetToPrevMonth={handleSetToPrevMonth}
-            handleSetToNextMonth={handleSetToNextMonth}
+            handleChangeMonth={handleChangeMonth}
             minCalendarYear={minCalendarYear}
             maxCalendarYear={maxCalendarYear}
             month={month}
@@ -82,12 +41,11 @@ export const CalendarControlPanel: FC<CalendarControlPanelProps> = ({
         </ControlPanelContainer>
       );
     }
-    case 'week': {
+    case weekView: {
       return (
         <ControlPanelContainer>
           <ControlPanelWeek
-            handleSetToPrevWeek={handleSetToPrevWeek}
-            handleSetToNextWeek={handleSetToNextWeek}
+            handleChangeWeek={handleChangeWeek}
             minCalendarYear={minCalendarYear}
             maxCalendarYear={maxCalendarYear}
             month={month}
@@ -98,32 +56,30 @@ export const CalendarControlPanel: FC<CalendarControlPanelProps> = ({
         </ControlPanelContainer>
       );
     }
-    case 'months': {
+    case monthsView: {
       return (
         <ControlPanelContainer>
           <ControlPanelMonth
-            handleSetToNextYear={handleSetToNextYear}
-            handleSetToPrevYear={handleSetToPrevYear}
             setCalendarView={setCalendarView}
             minCalendarYear={minCalendarYear}
+            handleChangeYear={handleChangeYear}
             maxCalendarYear={maxCalendarYear}
             year={year}
           />
         </ControlPanelContainer>
       );
     }
-    case 'years': {
+    case yearsView: {
       return (
         <ControlPanelContainer>
           <ControlPanelYears
             currentDecadeYears={currentDecadeYears}
             minCalendarYear={minCalendarYear}
             maxCalendarYear={maxCalendarYear}
-            handleSetToPrevDecade={handleSetToPrevDecade}
-            handleSetToNextDecade={handleSetToNextDecade}
+            handleChangeDecade={handleChangeDecade}
           />
         </ControlPanelContainer>
       );
     }
   }
-};
+});

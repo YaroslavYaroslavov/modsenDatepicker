@@ -1,5 +1,12 @@
 name: CI
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   test:
     name: test
@@ -10,6 +17,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Install packages
         run: npm i
+      - name: Build Application
+        run: npm run build
       - name: Run ESlint
         run: npm run lint
       - name: Run Prettier

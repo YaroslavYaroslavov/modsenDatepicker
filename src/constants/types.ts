@@ -1,10 +1,11 @@
-export type CalendaView = 'week' | 'month' | 'months' | 'years';
+export type CalendarView = 'week' | 'month' | 'months' | 'years';
 export interface CalendarProps {
   startOnMonday?: boolean;
-  defaultCalendarView?: CalendaView;
+  defaultCalendarView?: CalendarView;
   defaultMonth?: number;
   defaultYear?: number;
   withTodos?: boolean;
   maxCalendarYear?: number;
   minCalendarYear?: number;
+  holidayColor: string;
 }
