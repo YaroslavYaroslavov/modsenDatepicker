@@ -1,8 +1,18 @@
-import { App } from 'components/App/App';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-const root = document.getElementById('root');
+import { Calendar } from 'components/Calendar';
+import { getDefaultCalendar } from 'components/HOCs/defaultCalendar';
+import { withDatePicker } from 'components/HOCs/withDatePicker';
+import { withRangePicker } from 'components/HOCs/withRangePicker';
 
-if (root) {
-  createRoot(root).render(<App />);
+class CalendarService {
+  static getCustomizeCalendar() {
+    return getDefaultCalendar(Calendar);
+  }
+  static getCalendarWithDatePicker() {
+    return withDatePicker(Calendar);
+  }
+  static getCalendarWithRangePicker() {
+    return withRangePicker(Calendar);
+  }
 }
+
+export default CalendarService;
